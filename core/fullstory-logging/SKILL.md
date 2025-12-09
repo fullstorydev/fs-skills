@@ -1,7 +1,7 @@
 ---
 name: fullstory-logging
 version: v2
-description: Comprehensive guide for implementing Fullstory's Logging API (log method) for web applications. Teaches proper log level usage, message formatting, and capturing application logs in session replay. Includes detailed good/bad examples for error tracking, debugging, and operational monitoring to help developers add contextual log messages to FullStory sessions.
+description: Comprehensive guide for implementing Fullstory's Logging API (log method) for web applications. Teaches proper log level usage, message formatting, and capturing application logs in session replay. Includes detailed good/bad examples for error tracking, debugging, and operational monitoring to help developers add contextual log messages to Fullstory sessions.
 related_skills:
   - fullstory-observe-callbacks
   - fullstory-analytics-events
@@ -12,7 +12,7 @@ related_skills:
 
 ## Overview
 
-Fullstory's Logging API allows developers to send log messages directly to FullStory sessions without logging to the browser's developer console. These logs appear in the session replay, providing valuable context for debugging user issues, tracking application state, and understanding user workflows.
+Fullstory's Logging API allows developers to send log messages directly to Fullstory sessions without logging to the browser's developer console. These logs appear in the session replay, providing valuable context for debugging user issues, tracking application state, and understanding user workflows.
 
 Key use cases:
 - **Error Context**: Log errors with stack traces viewable in replay
@@ -37,9 +37,9 @@ Key use cases:
 
 | Behavior | Description |
 |----------|-------------|
-| **Not in browser console** | Logs only appear in FullStory, not browser console |
+| **Not in browser console** | Logs only appear in Fullstory, not browser console |
 | **Session context** | Logs viewable in session replay timeline |
-| **Timestamp** | Automatically timestamped by FullStory |
+| **Timestamp** | Automatically timestamped by Fullstory |
 | **Searchable** | Can search sessions by log content |
 
 ### When to Use FS Logging vs Console
@@ -102,7 +102,7 @@ function logError(error, context = {}) {
     error.stack ? `Stack:\n${error.stack}` : ''
   ].filter(Boolean).join('\n');
   
-  // Send to FullStory
+  // Send to Fullstory
   FS('log', {
     level: 'error',
     msg: errorDetails
@@ -235,7 +235,7 @@ AuditLogger.logSettingChanged('notifications', true, false);
 **Why this is good:**
 - ✅ Consistent log format
 - ✅ Rich context for each action
-- ✅ Easy to search in FullStory
+- ✅ Easy to search in Fullstory
 - ✅ Reusable across application
 
 ### Example 4: State Change Logging
@@ -787,14 +787,14 @@ window.fetch = createLoggingFetch();
 **Symptom**: FS('log') called but logs not in session replay
 
 **Common Causes**:
-1. ❌ FullStory not initialized
+1. ❌ Fullstory not initialized
 2. ❌ Session not being recorded
 3. ❌ Page excluded from capture
 4. ❌ FS blocked by ad blocker
 
 **Solutions**:
 - ✅ Verify FS is defined before logging
-- ✅ Check FullStory is recording
+- ✅ Check Fullstory is recording
 - ✅ Verify page isn't excluded
 - ✅ Check browser network tab for FS requests
 
@@ -851,5 +851,5 @@ When helping developers with Logging API:
 
 ---
 
-*This skill document was created to help Agent understand and guide developers in implementing FullStory's Logging API correctly for web applications.*
+*This skill document was created to help Agent understand and guide developers in implementing Fullstory's Logging API correctly for web applications.*
 

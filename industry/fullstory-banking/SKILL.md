@@ -56,27 +56,27 @@ For banking applications, **Fullstory's Private by Default mode is highly recomm
 
 ### PCI DSS Requirements
 
-| PCI DSS Requirement | FullStory Implication |
+| PCI DSS Requirement | Fullstory Implication |
 |--------------------|----------------------|
 | Protect stored cardholder data | Never capture card numbers, CVV |
-| Encrypt transmission | FullStory uses TLS (✓) |
-| Restrict access | Limit FullStory access to authorized staff |
-| Track access | Use FullStory audit logs |
-| Test security | Include FullStory in security assessments |
+| Encrypt transmission | Fullstory uses TLS (✓) |
+| Restrict access | Limit Fullstory access to authorized staff |
+| Track access | Use Fullstory audit logs |
+| Test security | Include Fullstory in security assessments |
 
 ### GLBA (Gramm-Leach-Bliley Act)
 
-| GLBA Requirement | FullStory Implication |
+| GLBA Requirement | Fullstory Implication |
 |-----------------|----------------------|
 | Protect customer NPI | Exclude account numbers, SSN, balances |
-| Privacy notices | Document FullStory in privacy policy |
+| Privacy notices | Document Fullstory in privacy policy |
 | Safeguards | Implement privacy controls |
 
 ### Open Banking / PSD2 (EU Markets)
 
 For EU financial services using Open Banking/PSD2:
 
-| Requirement | FullStory Implication |
+| Requirement | Fullstory Implication |
 |-------------|----------------------|
 | Strong Customer Authentication (SCA) | Track SCA flows for UX, exclude credentials |
 | Third-Party Provider (TPP) data | Exclude all TPP account aggregation data |
@@ -707,7 +707,7 @@ FS('trackEvent', {
 FS('setProperties', {
   type: 'user',
   properties: {
-    // Device fingerprinting (FullStory captures automatically)
+    // Device fingerprinting (Fullstory captures automatically)
     // Session metadata
     login_count_30d: user.loginCount30d,
     password_reset_count_90d: user.passwordResets90d,
@@ -740,7 +740,7 @@ function trackHighRiskAction(action) {
 When using session replay for fraud investigation:
 
 1. **Access control**: Limit replay access to fraud team
-2. **Audit logging**: FullStory logs who views what
+2. **Audit logging**: Fullstory logs who views what
 3. **Data retention**: Align with fraud investigation timelines
 4. **Evidence chain**: Document how replay was accessed
 
@@ -833,7 +833,7 @@ export function TransactionList({ transactions }) {
 
 ## KEY TAKEAWAYS FOR AGENT
 
-When helping banking clients with FullStory:
+When helping banking clients with Fullstory:
 
 1. **Default to exclusion**: In banking, when uncertain, exclude
 2. **Never capture**:
@@ -850,9 +850,9 @@ When helping banking clients with FullStory:
 
 ### Questions to Ask Banking Clients
 
-1. "Is your FullStory implementation in scope for PCI audits?"
+1. "Is your Fullstory implementation in scope for PCI audits?"
 2. "How do you handle fraud investigation with session replay?"
-3. "Who has access to FullStory in your organization?"
+3. "Who has access to Fullstory in your organization?"
 4. "Are transaction details being captured anywhere?"
 5. "How are mobile deposit check images handled?"
 
@@ -862,8 +862,8 @@ When helping banking clients with FullStory:
 
 - **PCI DSS Requirements**: https://www.pcisecuritystandards.org/
 - **GLBA Compliance**: https://www.ftc.gov/legal-library/browse/rules/financial-privacy-rule
-- **FullStory Privacy Controls**: ../core/fullstory-privacy-controls/SKILL.md
-- **FullStory Privacy Strategy**: ../meta/fullstory-privacy-strategy/SKILL.md
+- **Fullstory Privacy Controls**: ../core/fullstory-privacy-controls/SKILL.md
+- **Fullstory Privacy Strategy**: ../meta/fullstory-privacy-strategy/SKILL.md
 
 ---
 

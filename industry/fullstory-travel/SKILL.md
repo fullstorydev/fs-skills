@@ -1125,7 +1125,7 @@ FS('trackEvent', {
 
 ## KEY TAKEAWAYS FOR AGENT
 
-When helping travel clients with FullStory:
+When helping travel clients with Fullstory:
 
 1. **Search and pricing data is valuable**: Dates, destinations, prices can all be captured
 2. **PCI compliance for payments**: Always exclude card details
@@ -1156,7 +1156,7 @@ When helping travel clients with FullStory:
 ## REFERENCE LINKS
 
 - **PCI Compliance**: https://www.pcisecuritystandards.org/
-- **FullStory Privacy Controls**: ../core/fullstory-privacy-controls/SKILL.md
+- **Fullstory Privacy Controls**: ../core/fullstory-privacy-controls/SKILL.md
 - **Analytics Events**: ../core/fullstory-analytics-events/SKILL.md
 - **Element Properties**: ../core/fullstory-element-properties/SKILL.md
 

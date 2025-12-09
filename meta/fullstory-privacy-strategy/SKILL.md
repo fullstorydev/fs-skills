@@ -29,7 +29,7 @@ This guide provides strategic guidance for implementing privacy-conscious Fullst
 - When to use joinable keys instead of raw data
 - How to balance analytics value with privacy protection
 
-**Remember**: FullStory is a tool for understanding user experience, NOT a database for storing customer data. Send only what's needed for analysis.
+**Remember**: Fullstory is a tool for understanding user experience, NOT a database for storing customer data. Send only what's needed for analysis.
 
 ---
 
@@ -134,7 +134,7 @@ Build privacy into your semantic decoration from the start, not as an afterthoug
 
 ### 3. Data Classification Framework
 
-| Classification | Examples | FullStory Handling |
+| Classification | Examples | Fullstory Handling |
 |----------------|----------|-------------------|
 | **Public** | Product names, prices, UI text | Unmask |
 | **Internal** | Order IDs, session IDs | Send as-is or hash |
@@ -187,12 +187,12 @@ Build privacy into your semantic decoration from the start, not as an afterthoug
 
 ## Joinable Keys Strategy
 
-Instead of sending sensitive data to FullStory, send an identifier that can be joined in your analytics warehouse:
+Instead of sending sensitive data to Fullstory, send an identifier that can be joined in your analytics warehouse:
 
 ### The Pattern
 
 ```
-                    FullStory                    Your Data Warehouse
+                    Fullstory                    Your Data Warehouse
                     ┌─────────────────┐          ┌─────────────────────┐
 User Session:       │ user_id: "u123" │    →     │ user_id: "u123"     │
                     │ session_events  │          │ email: "john@co.com" │
@@ -211,7 +211,7 @@ User Session:       │ user_id: "u123" │    →     │ user_id: "u123"     �
 ### Implementation Example
 
 ```javascript
-// BAD: Sending PII directly to FullStory
+// BAD: Sending PII directly to Fullstory
 FS('setIdentity', {
   uid: user.email,  // PII!
   displayName: user.fullName,  // PII!
@@ -271,11 +271,11 @@ When you need to identify users but can't use internal IDs:
 | Need email for session linking | Hash email |
 | Multiple systems use email as key | Hash email |
 | Legal requires pseudonymization | Hash all PII |
-| Support needs to find user | Consider: do they need FullStory or CRM? |
+| Support needs to find user | Consider: do they need Fullstory or CRM? |
 
 ### Hash Implementation
 
-> ⚠️ **SECURITY WARNING**: Client-side hashing is **NOT a security control** - it's only a privacy measure. JavaScript code is inspectable, and unsalted hashes are reversible via rainbow tables. **True security requires server-side processing.** Use hashing only to prevent accidental PII exposure in FullStory, not to protect against determined attackers.
+> ⚠️ **SECURITY WARNING**: Client-side hashing is **NOT a security control** - it's only a privacy measure. JavaScript code is inspectable, and unsalted hashes are reversible via rainbow tables. **True security requires server-side processing.** Use hashing only to prevent accidental PII exposure in Fullstory, not to protect against determined attackers.
 
 ```javascript
 // PREFERRED: Hash on your backend, pass to frontend
@@ -308,7 +308,7 @@ FS('setIdentity', {
 
 1. **Server-side hashing is preferred**: Hash on backend, send hash to client
 2. **Consistent hashing**: Always lowercase, trim whitespace before hashing
-3. **Salt optional for FullStory**: Unsalted hashes allow you to join later
+3. **Salt optional for Fullstory**: Unsalted hashes allow you to join later
 4. **Document mapping**: Keep record of hash → original for support lookups
 5. **Not a security measure**: Hashing prevents accidental exposure, not malicious extraction
 
@@ -318,10 +318,10 @@ FS('setIdentity', {
 
 ### GDPR (Europe)
 
-| Requirement | FullStory Approach |
+| Requirement | Fullstory Approach |
 |-------------|-------------------|
 | Consent before processing | Use `FS('setIdentity', { consent: true/false })` |
-| Right to be forgotten | Use FullStory's deletion API |
+| Right to be forgotten | Use Fullstory's deletion API |
 | Data minimization | Use joinable keys, not raw PII |
 | Purpose limitation | Only capture UX-relevant data |
 | Pseudonymization | Hash identifiers |
@@ -350,12 +350,12 @@ function identifyUserGDPR(user, hasConsent) {
 
 ### HIPAA (Healthcare - USA)
 
-| Requirement | FullStory Approach |
+| Requirement | Fullstory Approach |
 |-------------|-------------------|
 | PHI protection | Exclude ALL health-related content |
 | Minimum necessary | Capture only UX metrics |
-| Audit trail | Use FullStory's audit logs |
-| BAA required | Ensure signed with FullStory |
+| Audit trail | Use Fullstory's audit logs |
+| BAA required | Ensure signed with Fullstory |
 
 ```javascript
 // HIPAA-compliant approach
@@ -388,7 +388,7 @@ FS('setProperties', {
 
 ### PCI DSS (Payment Cards)
 
-| Data Type | Allowed in FullStory? |
+| Data Type | Allowed in Fullstory? |
 |-----------|----------------------|
 | Card number | ❌ Never (auto-excluded) |
 | CVV/CVC | ❌ Never (auto-excluded) |
@@ -419,10 +419,10 @@ FS('trackEvent', {
 
 ### CCPA (California - USA)
 
-| Requirement | FullStory Approach |
+| Requirement | Fullstory Approach |
 |-------------|-------------------|
-| Right to know | Document what FullStory captures |
-| Right to delete | Use FullStory's deletion API |
+| Right to know | Document what Fullstory captures |
+| Right to delete | Use Fullstory's deletion API |
 | Right to opt-out | Use consent API |
 | Non-discrimination | Same experience regardless of opt-out |
 
@@ -433,7 +433,7 @@ FS('trackEvent', {
 ### User Identification Decision Tree
 
 ```
-Should I send this identifier to FullStory?
+Should I send this identifier to Fullstory?
 │
 ├─ Is it an internal ID (no PII)?
 │  └─ YES → Send as uid ✅
@@ -460,7 +460,7 @@ Should I send this identifier to FullStory?
 ### Property Decision Tree
 
 ```
-Should I send this property to FullStory?
+Should I send this property to Fullstory?
 │
 ├─ Is it regulated data (PHI, financial details)?
 │  └─ YES → Don't send ❌
@@ -700,7 +700,7 @@ When helping developers with privacy strategy:
 - [User Consent](../core/fullstory-user-consent/SKILL.md) - Consent API
 - [Identify Users](../core/fullstory-identify-users/SKILL.md) - User identification
 
-### FullStory Documentation
+### Fullstory Documentation
 - **Privacy Overview**: https://help.fullstory.com/hc/en-us/articles/360020623574
 - **Private by Default**: https://help.fullstory.com/hc/en-us/articles/360044349073
 - **Data Deletion API**: https://developer.fullstory.com/deletion
@@ -708,5 +708,5 @@ When helping developers with privacy strategy:
 
 ---
 
-*This skill document provides strategic guidance for privacy-conscious FullStory implementations. Always consult your legal and compliance teams for specific regulatory requirements.*
+*This skill document provides strategic guidance for privacy-conscious Fullstory implementations. Always consult your legal and compliance teams for specific regulatory requirements.*
 

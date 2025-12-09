@@ -21,7 +21,7 @@ Healthcare has the most stringent requirements for session analytics due to:
 - **HIPAA compliance**: Protected Health Information (PHI) requires strict handling
 - **Patient trust**: Breach of medical data is particularly harmful
 - **Regulated entities**: Covered entities and business associates have legal obligations
-- **BAA requirement**: Business Associate Agreement required with FullStory
+- **BAA requirement**: Business Associate Agreement required with Fullstory
 
 ### Critical Understanding
 
@@ -62,7 +62,7 @@ For healthcare applications, **Fullstory's Private by Default mode is essential*
 
 PHI (Protected Health Information) includes any health information that can be linked to an individual:
 
-| PHI Category | Examples | FullStory Handling |
+| PHI Category | Examples | Fullstory Handling |
 |--------------|----------|-------------------|
 | **Names** | Patient, provider, family | fs-exclude (not mask!) |
 | **Geographic data** | Address, city, ZIP | fs-exclude |
@@ -81,7 +81,7 @@ PHI (Protected Health Information) includes any health information that can be l
 
 HIPAA provides two methods for de-identification. Understanding these helps clarify what Fullstory can/cannot capture:
 
-| Method | Approach | FullStory Implication |
+| Method | Approach | Fullstory Implication |
 |--------|----------|----------------------|
 | **Safe Harbor** | Remove 18 specific identifiers | Cannot rely on this—FS captures too much visual data |
 | **Expert Determination** | Statistical/scientific analysis | Requires formal expert certification; impractical for session replay |
@@ -190,7 +190,7 @@ Only capture what is absolutely necessary for UX analysis:
 // DO NOT link sessions to patient identity
 
 // Option 1: Don't identify at all (safest)
-// Just use anonymous FullStory sessions
+// Just use anonymous Fullstory sessions
 
 // Option 2: Session-only identifier
 FS('setIdentity', {
@@ -741,10 +741,10 @@ FS('trackEvent', {
 For EHR systems and provider-facing applications:
 
 ```javascript
-// Provider applications should use VERY limited FullStory
+// Provider applications should use VERY limited Fullstory
 // Consider: Do you even need session replay?
 
-// If you do use FullStory on provider side:
+// If you do use Fullstory on provider side:
 // 1. Never capture patient data displayed on screen
 // 2. Only track navigation and technical issues
 // 3. Consider using it only for non-patient screens (admin, scheduling UI)
@@ -767,11 +767,11 @@ FS('setProperties', {
 ```javascript
 // Healthcare consent is complex - consult your compliance team
 
-// Option 1: Don't use FullStory on authenticated patient pages
+// Option 1: Don't use Fullstory on authenticated patient pages
 // Safest option - use only on public pages
 
 // Option 2: Get explicit consent
-function initializeFullStoryWithConsent() {
+function initializeFullstoryWithConsent() {
   // Check if patient has consented to analytics
   if (patient.hasConsentedToAnalytics) {
     FS('setIdentity', {
@@ -794,7 +794,7 @@ function initializeFullStoryWithConsent() {
 
 ### Before Going Live
 
-- [ ] **BAA signed** with FullStory
+- [ ] **BAA signed** with Fullstory
 - [ ] **Privacy by Default** mode enabled
 - [ ] **All PHI screens excluded**
 - [ ] **No patient identifiers** in user properties
@@ -813,7 +813,7 @@ function initializeFullStoryWithConsent() {
 
 ## KEY TAKEAWAYS FOR AGENT
 
-When helping healthcare clients with FullStory:
+When helping healthcare clients with Fullstory:
 
 1. **Default to exclusion**: In healthcare, fs-exclude is the default, not fs-unmask
 2. **Masking is NOT sufficient**: Even masked text can reveal PHI through structure
@@ -821,7 +821,7 @@ When helping healthcare clients with FullStory:
 4. **BAA is required**: Don't implement until legal has BAA in place
 5. **Consider anonymous sessions**: May not need user identification at all
 6. **Public vs. authenticated**: Very different rules apply
-7. **Provider applications**: May not be appropriate for FullStory at all
+7. **Provider applications**: May not be appropriate for Fullstory at all
 
 ### What You CAN Track (Limited)
 
@@ -847,8 +847,8 @@ When helping healthcare clients with FullStory:
 
 ### Questions to Ask Healthcare Clients
 
-1. "Do you have a BAA with FullStory?"
-2. "Is FullStory in your HIPAA security assessment?"
+1. "Do you have a BAA with Fullstory?"
+2. "Is Fullstory in your HIPAA security assessment?"
 3. "Are you using Private by Default mode?"
 4. "Have you audited session replays for PHI exposure?"
 5. "Is your implementation scoped to only non-PHI screens?"
@@ -860,19 +860,19 @@ When helping healthcare clients with FullStory:
 - Including provider names in events
 - Capturing search queries
 - Not having a BAA in place
-- Using FullStory on EHR screens
+- Using Fullstory on EHR screens
 
 ---
 
 ## REFERENCE LINKS
 
 - **HIPAA Overview**: https://www.hhs.gov/hipaa/
-- **FullStory HIPAA Compliance**: https://www.fullstory.com/legal/hipaa/
+- **Fullstory HIPAA Compliance**: https://www.fullstory.com/legal/hipaa/
 - **Privacy Controls**: ../core/fullstory-privacy-controls/SKILL.md
 - **Privacy Strategy**: ../meta/fullstory-privacy-strategy/SKILL.md
 - **User Consent**: ../core/fullstory-user-consent/SKILL.md
 
 ---
 
-*This skill document is specific to healthcare implementations. Always consult your HIPAA compliance officer and legal counsel before implementing FullStory in a healthcare context. This guide does not constitute legal advice.*
+*This skill document is specific to healthcare implementations. Always consult your HIPAA compliance officer and legal counsel before implementing Fullstory in a healthcare context. This guide does not constitute legal advice.*
 

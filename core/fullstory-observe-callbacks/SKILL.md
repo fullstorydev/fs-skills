@@ -1,7 +1,7 @@
 ---
 name: fullstory-observe-callbacks
 version: v2
-description: Comprehensive guide for implementing Fullstory's Observer/Callback API (observe method) for web applications. Teaches proper event subscription, callback handling, observer cleanup, and reacting to FullStory lifecycle events. Includes detailed good/bad examples for session URL capture, initialization handling, and integration with analytics platforms.
+description: Comprehensive guide for implementing Fullstory's Observer/Callback API (observe method) for web applications. Teaches proper event subscription, callback handling, observer cleanup, and reacting to Fullstory lifecycle events. Includes detailed good/bad examples for session URL capture, initialization handling, and integration with analytics platforms.
 related_skills:
   - fullstory-async-methods
   - fullstory-capture-control
@@ -12,10 +12,10 @@ related_skills:
 
 ## Overview
 
-Fullstory's Observer API allows developers to register callbacks that react to FullStory lifecycle events. Instead of polling or guessing when FullStory is ready, you can subscribe to specific events and be notified when they occur. This is essential for:
+Fullstory's Observer API allows developers to register callbacks that react to Fullstory lifecycle events. Instead of polling or guessing when Fullstory is ready, you can subscribe to specific events and be notified when they occur. This is essential for:
 
 - **Session URL Capture**: Get notified when session URL is available
-- **Initialization Handling**: Know when FullStory starts capturing
+- **Initialization Handling**: Know when Fullstory starts capturing
 - **Third-party Integration**: Forward session URLs to other tools
 - **Conditional Features**: Enable features based on FS state
 - **Resource Management**: Clean up observers on component unmount
@@ -26,7 +26,7 @@ Fullstory's Observer API allows developers to register callbacks that react to F
 
 | Type | Fires When | Callback Receives |
 |------|------------|-------------------|
-| `'start'` | FullStory begins capturing | `undefined` |
+| `'start'` | Fullstory begins capturing | `undefined` |
 | `'session'` | Session URL becomes available | `{ url: string }` |
 
 ### Observer Lifecycle
@@ -145,10 +145,10 @@ const cleanup = initializeSessionTracking();
 ### Example 2: React Hook for Session URL
 
 ```jsx
-// GOOD: React hook for FullStory session management
+// GOOD: React hook for Fullstory session management
 import { useState, useEffect, useCallback } from 'react';
 
-function useFullStorySession() {
+function useFullstorySession() {
   const [sessionUrl, setSessionUrl] = useState(null);
   const [isCapturing, setIsCapturing] = useState(false);
   const [isReady, setIsReady] = useState(false);
@@ -204,7 +204,7 @@ function useFullStorySession() {
 
 // Usage in component
 function SupportButton() {
-  const { sessionUrl, isReady } = useFullStorySession();
+  const { sessionUrl, isReady } = useFullstorySession();
   
   const handleSupportClick = () => {
     openSupportChat({
@@ -231,13 +231,13 @@ function SupportButton() {
 - ✅ Helper function for copying URL
 - ✅ Graceful handling if FS unavailable
 
-### Example 3: Initialize Analytics After FullStory Ready
+### Example 3: Initialize Analytics After Fullstory Ready
 
 ```javascript
-// GOOD: Wait for FullStory before initializing dependent features
+// GOOD: Wait for Fullstory before initializing dependent features
 class AnalyticsManager {
   constructor() {
-    this.isFullStoryReady = false;
+    this.isFullstoryReady = false;
     this.sessionUrl = null;
     this.observers = [];
     this.pendingEvents = [];
@@ -245,16 +245,16 @@ class AnalyticsManager {
   
   initialize() {
     if (typeof FS === 'undefined') {
-      console.warn('FullStory not available');
+      console.warn('Fullstory not available');
       this.flushPendingEvents(); // Send without FS context
       return;
     }
     
-    // Wait for FullStory to start
+    // Wait for Fullstory to start
     const startObserver = FS('observe', {
       type: 'start',
       callback: () => {
-        this.isFullStoryReady = true;
+        this.isFullstoryReady = true;
         this.flushPendingEvents();
       }
     });
@@ -275,13 +275,13 @@ class AnalyticsManager {
     const enrichedEvent = {
       ...properties,
       fullstoryUrl: this.sessionUrl,
-      fullstoryReady: this.isFullStoryReady
+      fullstoryReady: this.isFullstoryReady
     };
     
-    if (this.isFullStoryReady) {
+    if (this.isFullstoryReady) {
       this.sendToAnalytics(eventName, enrichedEvent);
     } else {
-      // Queue until FullStory is ready
+      // Queue until Fullstory is ready
       this.pendingEvents.push({ eventName, properties: enrichedEvent });
     }
   }
@@ -332,13 +332,13 @@ analytics.track('Page Viewed', { page: '/home' });
 
 ```javascript
 // GOOD: Using async observers with error handling
-async function setupFullStoryIntegration() {
+async function setupFullstoryIntegration() {
   try {
     // Set up start observer
     const startObserver = await FS('observeAsync', {
       type: 'start',
       callback: () => {
-        console.log('FullStory started capturing');
+        console.log('Fullstory started capturing');
         enableSessionReplayFeatures();
       }
     });
@@ -362,7 +362,7 @@ async function setupFullStoryIntegration() {
     };
     
   } catch (error) {
-    console.warn('FullStory integration failed:', error);
+    console.warn('Fullstory integration failed:', error);
     return {
       cleanup: () => {},
       status: 'failed',
@@ -375,7 +375,7 @@ async function setupFullStoryIntegration() {
 let fsIntegration = null;
 
 async function initApp() {
-  fsIntegration = await setupFullStoryIntegration();
+  fsIntegration = await setupFullstoryIntegration();
   
   if (fsIntegration.status === 'success') {
     showSessionReplayBadge();
@@ -456,7 +456,7 @@ class ErrorReporter {
     // Send to your error service
     this.sendErrorReport(report);
     
-    // Also log to FullStory
+    // Also log to Fullstory
     if (typeof FS !== 'undefined') {
       FS('log', {
         level: 'error',
@@ -489,7 +489,7 @@ errorReporter.initialize();
 **Why this is good:**
 - ✅ Integrates with popular error tools
 - ✅ Auto-attaches session URL to all errors
-- ✅ Also logs to FullStory
+- ✅ Also logs to Fullstory
 - ✅ Cleanup method available
 
 ---
@@ -574,7 +574,7 @@ FS('observe', {
 // GOOD: Use valid event types
 FS('observe', {
   type: 'start',  // Valid: when capture starts
-  callback: () => console.log('FullStory started!')
+  callback: () => console.log('Fullstory started!')
 });
 
 FS('observe', {
@@ -631,7 +631,7 @@ async function initApp() {
     });
   });
   
-  // If FullStory is blocked, this never runs
+  // If Fullstory is blocked, this never runs
   startApp(sessionUrl);
 }
 ```
@@ -728,7 +728,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 ```javascript
 // Centralized observer management
-class FullStoryObserverManager {
+class FullstoryObserverManager {
   constructor() {
     this.observers = new Map();
   }
@@ -763,14 +763,14 @@ class FullStoryObserverManager {
 }
 
 // Usage
-const fsObservers = new FullStoryObserverManager();
+const fsObservers = new FullstoryObserverManager();
 
 fsObservers.register('session', 'session', (session) => {
   console.log('Session URL:', session.url);
 });
 
 fsObservers.register('start', 'start', () => {
-  console.log('FullStory started');
+  console.log('Fullstory started');
 });
 
 // Cleanup
@@ -780,10 +780,10 @@ fsObservers.unregisterAll();
 ### Pattern 2: Vue Composable
 
 ```javascript
-// Vue 3 composable for FullStory session
+// Vue 3 composable for Fullstory session
 import { ref, onMounted, onUnmounted } from 'vue';
 
-export function useFullStorySession() {
+export function useFullstorySession() {
   const sessionUrl = ref(null);
   const isCapturing = ref(false);
   const observers = [];
@@ -822,9 +822,9 @@ export function useFullStorySession() {
 
 // Usage in component
 <script setup>
-import { useFullStorySession } from './useFullStorySession';
+import { useFullstorySession } from './useFullstorySession';
 
-const { sessionUrl, isCapturing } = useFullStorySession();
+const { sessionUrl, isCapturing } = useFullstorySession();
 </script>
 
 <template>
@@ -840,8 +840,8 @@ const { sessionUrl, isCapturing } = useFullStorySession();
 ### Pattern 3: Event Emitter Pattern
 
 ```javascript
-// Event emitter for FullStory events
-class FullStoryEventEmitter {
+// Event emitter for Fullstory events
+class FullstoryEventEmitter {
   constructor() {
     this.listeners = {
       start: [],
@@ -912,7 +912,7 @@ class FullStoryEventEmitter {
 }
 
 // Global instance
-const fsEvents = new FullStoryEventEmitter();
+const fsEvents = new FullstoryEventEmitter();
 
 // Usage
 const unsubscribe = fsEvents.on('session', (session) => {
@@ -932,14 +932,14 @@ unsubscribe();
 **Symptom**: Observer registered but callback never called
 
 **Common Causes**:
-1. ❌ FullStory not loaded or blocked
+1. ❌ Fullstory not loaded or blocked
 2. ❌ Wrong event type
-3. ❌ FullStory not capturing (e.g., excluded page)
+3. ❌ Fullstory not capturing (e.g., excluded page)
 
 **Solutions**:
 - ✅ Verify FS is defined
 - ✅ Check event type is 'start' or 'session'
-- ✅ Check FullStory console for errors
+- ✅ Check Fullstory console for errors
 
 ### Multiple Callbacks
 
@@ -1010,5 +1010,5 @@ When helping developers with Observer API:
 
 ---
 
-*This skill document was created to help Agent understand and guide developers in implementing FullStory's Observer/Callback API correctly for web applications.*
+*This skill document was created to help Agent understand and guide developers in implementing Fullstory's Observer/Callback API correctly for web applications.*
 

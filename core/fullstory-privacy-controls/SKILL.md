@@ -697,7 +697,7 @@ function processPayment(cardNumber, cvv) {
 ```
 
 **Why this is bad:**
-- ❌ Console logs are captured by FullStory
+- ❌ Console logs are captured by Fullstory
 - ❌ Card number and CVV in console
 - ❌ SSN in console
 - ❌ Privacy classes don't affect console
@@ -716,7 +716,7 @@ function processPayment(cardNumber, cvv) {
   // Process payment...
 }
 
-// Or disable console capture in FullStory settings
+// Or disable console capture in Fullstory settings
 ```
 
 ---
@@ -791,7 +791,7 @@ input
 ### Unsupported Selectors
 
 ```css
-/* NOT supported in FullStory privacy rules */
+/* NOT supported in Fullstory privacy rules */
 :hover
 :focus
 :nth-child()
@@ -814,7 +814,7 @@ input
 
 ## FORM PRIVACY FEATURE
 
-FullStory's Form Privacy feature (accounts created after Nov 10, 2021) provides additional automatic protection:
+Fullstory's Form Privacy feature (accounts created after Nov 10, 2021) provides additional automatic protection:
 
 ### Automatically Protected
 
@@ -847,7 +847,7 @@ FullStory's Form Privacy feature (accounts created after Nov 10, 2021) provides 
 
 **Solutions**:
 - ✅ Check browser DevTools for class
-- ✅ Add class before FullStory initializes
+- ✅ Add class before Fullstory initializes
 - ✅ Check Settings for conflicting rules
 - ✅ Verify no `fs-unmask` on children
 
@@ -907,7 +907,7 @@ When helping developers with Privacy Controls:
 4. **Best practices**:
    - Build privacy into component library
    - Use explicit classes, don't rely on auto-detection
-   - Test in FullStory to verify masking/exclusion
+   - Test in Fullstory to verify masking/exclusion
    - Also disable console capture if logging sensitive data
 
 ---
@@ -921,5 +921,5 @@ When helping developers with Privacy Controls:
 
 ---
 
-*This skill document was created to help Agent understand and guide developers in implementing FullStory's Privacy Controls correctly for compliant session recording.*
+*This skill document was created to help Agent understand and guide developers in implementing Fullstory's Privacy Controls correctly for compliant session recording.*
 

@@ -121,7 +121,7 @@ FS('trackEvent', {
 // E-Commerce: Multiple identification stages
 
 // 1. Anonymous visitor (before account creation)
-// FullStory auto-assigns anonymous ID
+// Fullstory auto-assigns anonymous ID
 
 // 2. Email captured (newsletter, cart)
 function onEmailCapture(email) {
@@ -1093,7 +1093,7 @@ function trackExperimentExposure(experimentName, variant) {
 
 ## KEY TAKEAWAYS FOR AGENT
 
-When helping e-commerce clients with FullStory:
+When helping e-commerce clients with Fullstory:
 
 1. **Product data is valuable**: Unlike banking, product names/prices/categories are core analytics - capture them
 2. **PCI compliance still applies**: Payment forms must be excluded
@@ -1109,7 +1109,7 @@ When helping e-commerce clients with FullStory:
 2. "How are you handling checkout abandonment?"
 3. "Are your product cards using Element Properties?"
 4. "What payment methods do you support? (PayPal, Apple Pay, Klarna)"
-5. "Do you have A/B tests you want to analyze in FullStory?"
+5. "Do you have A/B tests you want to analyze in Fullstory?"
 
 ### Common Mistakes
 
@@ -1123,7 +1123,7 @@ When helping e-commerce clients with FullStory:
 
 ## REFERENCE LINKS
 
-- **FullStory for E-Commerce**: https://www.fullstory.com/resources/ecommerce
+- **Fullstory for E-Commerce**: https://www.fullstory.com/resources/ecommerce
 - **Element Properties**: ../core/fullstory-element-properties/SKILL.md
 - **Analytics Events**: ../core/fullstory-analytics-events/SKILL.md
 - **Privacy Controls**: ../core/fullstory-privacy-controls/SKILL.md

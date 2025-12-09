@@ -40,7 +40,7 @@ Gaming platforms have unique requirements due to:
 
 ### Key Regulations by Jurisdiction
 
-| Jurisdiction | Key Regulations | FullStory Implications |
+| Jurisdiction | Key Regulations | Fullstory Implications |
 |--------------|-----------------|------------------------|
 | **UK** | UKGC License Conditions | Responsible gaming tracking, self-exclusion |
 | **Malta** | MGA Requirements | Player protection, data localization |
@@ -1260,7 +1260,7 @@ function onHelpResourceClick(resource) {
 
 ## Player Behavior Considerations
 
-### What NOT to Analyze in FullStory
+### What NOT to Analyze in Fullstory
 
 Some analyses could facilitate problem gaming identification or discrimination:
 
@@ -1348,7 +1348,7 @@ function getSessionDurationBand(minutes) {
 
 ## KEY TAKEAWAYS FOR AGENT
 
-When helping gaming clients with FullStory:
+When helping gaming clients with Fullstory:
 
 1. **Regulatory awareness**: Different jurisdictions have different requirements
 2. **Financial data is highly sensitive**: Always exclude or use ranges
@@ -1376,7 +1376,7 @@ When helping gaming clients with FullStory:
 
 ### Ethical Considerations
 
-Remember: FullStory in gaming should help improve UX, NOT enable:
+Remember: Fullstory in gaming should help improve UX, NOT enable:
 - Problem gaming identification for marketing
 - Surveillance of player behavior
 - Discrimination based on gaming patterns
@@ -1399,8 +1399,8 @@ The goal is better UX for all players, not optimizing revenue extraction.
 - **Responsible Gaming Council**: https://www.responsiblegaming.org/
 
 ### Related Skills
-- **FullStory Privacy Controls**: ../core/fullstory-privacy-controls/SKILL.md
-- **FullStory Privacy Strategy**: ../meta/fullstory-privacy-strategy/SKILL.md
+- **Fullstory Privacy Controls**: ../core/fullstory-privacy-controls/SKILL.md
+- **Fullstory Privacy Strategy**: ../meta/fullstory-privacy-strategy/SKILL.md
 
 ---
 

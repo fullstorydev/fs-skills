@@ -17,11 +17,11 @@ related_skills:
 
 ## Overview
 
-Fullstory's User Identification API allows developers to associate session data with your own unique customer identifiers. By calling `FS('setIdentity')`, you link a user's FullStory session to their identity in your system, enabling you to:
+Fullstory's User Identification API allows developers to associate session data with your own unique customer identifiers. By calling `FS('setIdentity')`, you link a user's Fullstory session to their identity in your system, enabling you to:
 
 - Search for sessions by customer ID
 - View all sessions for a specific user across devices
-- Connect FullStory data with your internal analytics and CRM systems
+- Connect Fullstory data with your internal analytics and CRM systems
 - Attribute behavior patterns to known users
 
 This skill covers implementation patterns, best practices, and common pitfalls for browser/web applications using the v2 Browser API.
@@ -76,7 +76,7 @@ Fullstory uses a **first-party cookie** (`fs_uid`) to track users across session
 
 ### Re-identification Behavior
 - **CRITICAL**: You cannot change a user's identity once assigned within a session
-- If you call `setIdentity` with a different `uid`, FullStory automatically splits the session into a new session
+- If you call `setIdentity` with a different `uid`, Fullstory automatically splits the session into a new session
 - This is by design to maintain data integrity and prevent identity pollution
 
 ### Key Principles
@@ -136,7 +136,7 @@ FS('setIdentity', {
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `displayName` | string | Shown in session list and user card in FullStory app |
+| `displayName` | string | Shown in session list and user card in Fullstory app |
 | `email` | string | Enables search via HTTP API and email-based lookups |
 
 ### Supported Property Types
@@ -172,7 +172,7 @@ async function handleLogin(credentials) {
     const response = await authenticateUser(credentials);
     const user = response.user;
     
-    // Identify user in FullStory right after successful auth
+    // Identify user in Fullstory right after successful auth
     FS('setIdentity', {
       uid: user.id,  // Use stable database ID, not email
       properties: {
@@ -194,7 +194,7 @@ async function handleLogin(credentials) {
 **Why this is good:**
 - ✅ Uses stable database ID as uid, not PII
 - ✅ Called immediately after successful authentication
-- ✅ Includes displayName for easy identification in FullStory
+- ✅ Includes displayName for easy identification in Fullstory
 - ✅ Includes email for searchability
 - ✅ Adds business-relevant properties (accountType, signupDate)
 
@@ -202,7 +202,7 @@ async function handleLogin(credentials) {
 
 ```javascript
 // GOOD: Check authentication state and identify on every page load
-function initializeFullStory() {
+function initializeFullstory() {
   const currentUser = getCurrentAuthenticatedUser();
   
   if (currentUser && currentUser.id) {
@@ -223,7 +223,7 @@ function initializeFullStory() {
 }
 
 // Call on app initialization
-document.addEventListener('DOMContentLoaded', initializeFullStory);
+document.addEventListener('DOMContentLoaded', initializeFullstory);
 ```
 
 **Why this is good:**
@@ -235,11 +235,11 @@ document.addEventListener('DOMContentLoaded', initializeFullStory);
 ### Example 3: React/Next.js Integration
 
 ```jsx
-// GOOD: React hook for FullStory identification
+// GOOD: React hook for Fullstory identification
 import { useEffect } from 'react';
 import { useAuth } from './auth-context';
 
-function useFullStoryIdentity() {
+function useFullstoryIdentity() {
   const { user, isAuthenticated, isLoading } = useAuth();
   
   useEffect(() => {
@@ -264,7 +264,7 @@ function useFullStoryIdentity() {
 
 // Usage in App component
 function App() {
-  useFullStoryIdentity();
+  useFullstoryIdentity();
   
   return <AppContent />;
 }
@@ -297,7 +297,7 @@ async function handleOAuthCallback() {
     // Store tokens
     setAuthTokens(tokens);
     
-    // Identify in FullStory BEFORE redirecting away
+    // Identify in Fullstory BEFORE redirecting away
     FS('setIdentity', {
       uid: user.id,
       properties: {
@@ -349,7 +349,7 @@ FS('setIdentity', {
 
 **Why this is good:**
 - ✅ Explicit schema ensures proper type handling
-- ✅ Enables numeric comparisons in FullStory search
+- ✅ Enables numeric comparisons in Fullstory search
 - ✅ Boolean enables is/is-not filtering
 - ✅ Date enables time-based queries
 - ✅ String array enables "contains" searches
@@ -371,7 +371,7 @@ FS('setIdentity', {
 ```
 
 **Why this is bad:**
-- ❌ Email is PII - exposes it in FullStory URLs and exports
+- ❌ Email is PII - exposes it in Fullstory URLs and exports
 - ❌ Email can change when user updates their email address
 - ❌ May cause session linking issues if email is reused
 - ❌ Violates privacy best practices
@@ -458,7 +458,7 @@ function switchUserAccount(newUser) {
 **Why this is bad:**
 - ❌ Cannot change identity of an already-identified user
 - ❌ Causes automatic session split (may be unexpected)
-- ❌ Creates confusing user journey in FullStory
+- ❌ Creates confusing user journey in Fullstory
 - ❌ May fragment analytics data
 
 **CORRECTED VERSION:**
@@ -540,7 +540,7 @@ FS('setIdentity', {
 ```
 
 **Why this is bad:**
-- ❌ No displayName - sessions show cryptic ID in FullStory UI
+- ❌ No displayName - sessions show cryptic ID in Fullstory UI
 - ❌ No email - can't search users via email
 - ❌ No business context - can't segment users effectively
 - ❌ Wastes the opportunity to enrich user data
@@ -640,7 +640,7 @@ FS('setIdentity', {
 
 ```javascript
 // For apps where users can switch between accounts
-class FullStoryIdentityManager {
+class FullstoryIdentityManager {
   currentUserId = null;
   
   identify(user) {
@@ -784,16 +784,16 @@ FS('setProperties', {
 **Symptom**: User appears anonymous despite calling setIdentity
 
 **Common Causes**:
-1. ❌ setIdentity called after FullStory script fully loaded
+1. ❌ setIdentity called after Fullstory script fully loaded
 2. ❌ uid is undefined, null, or empty string
-3. ❌ FullStory blocked by ad blocker
+3. ❌ Fullstory blocked by ad blocker
 4. ❌ Browser privacy mode preventing storage
 
 **Solutions**:
 - ✅ Verify uid is a non-empty string before calling
-- ✅ Check browser console for FullStory errors
+- ✅ Check browser console for Fullstory errors
 - ✅ Use async API: `await FS('setIdentityAsync', {...})`
-- ✅ Verify FullStory snippet is loading correctly
+- ✅ Verify Fullstory snippet is loading correctly
 
 ### Unexpected Session Splits
 
@@ -811,7 +811,7 @@ FS('setProperties', {
 
 ### Properties Not Appearing
 
-**Symptom**: User properties don't show in FullStory
+**Symptom**: User properties don't show in Fullstory
 
 **Common Causes**:
 1. ❌ Property values have wrong types
@@ -834,7 +834,7 @@ FS('setProperties', {
 - Should NOT be PII (don't use email, phone, etc.)
 
 ### Property Limits
-- Check your FullStory plan for specific limits
+- Check your Fullstory plan for specific limits
 - Property names: alphanumeric, underscores, hyphens
 - High cardinality properties may be limited
 
@@ -886,5 +886,5 @@ When helping developers implement User Identification:
 
 ---
 
-*This skill document was created to help Agent understand and guide developers in implementing FullStory's User Identification API correctly for web applications.*
+*This skill document was created to help Agent understand and guide developers in implementing Fullstory's User Identification API correctly for web applications.*
 

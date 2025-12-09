@@ -20,7 +20,7 @@ Fullstory's Anonymize Users API allows developers to release the identity of the
 - **Privacy Compliance**: Implementing "forget me" or privacy-conscious features
 - **Shared Devices**: Ensuring one user's session doesn't bleed into another's
 
-When you call `FS('setIdentity', { anonymous: true })`, the current session ends and a fresh anonymous session begins. The previously identified user remains in FullStory's records, but subsequent activity is no longer linked to them.
+When you call `FS('setIdentity', { anonymous: true })`, the current session ends and a fresh anonymous session begins. The previously identified user remains in Fullstory's records, but subsequent activity is no longer linked to them.
 
 ## Core Concepts
 
@@ -55,7 +55,7 @@ When you call `FS('setIdentity', { anonymous: true })`, the current session ends
 | User logs out | ✅ Yes | Prevents session attribution to wrong user |
 | User switches accounts | ✅ Yes | Clean slate before new identification |
 | User requests data deletion | ❓ Consider | Part of broader privacy implementation |
-| User clears browser data | ❌ No | FullStory handles this automatically |
+| User clears browser data | ❌ No | Fullstory handles this automatically |
 | Page navigation | ❌ No | Identity persists across pages |
 | Session timeout | ❓ Depends | Based on your security requirements |
 
@@ -93,7 +93,7 @@ await FS('setIdentityAsync', { anonymous: true });
 ### Example 1: Basic Logout Handler
 
 ```javascript
-// GOOD: Proper logout with FullStory anonymization
+// GOOD: Proper logout with Fullstory anonymization
 async function handleLogout() {
   try {
     // 1. Call your backend logout endpoint
@@ -103,7 +103,7 @@ async function handleLogout() {
     clearAuthTokens();
     clearUserState();
     
-    // 3. Anonymize in FullStory BEFORE redirecting
+    // 3. Anonymize in Fullstory BEFORE redirecting
     FS('setIdentity', { anonymous: true });
     
     // 4. Redirect to login page
@@ -126,7 +126,7 @@ async function handleLogout() {
 ### Example 2: React Logout with Auth Context
 
 ```jsx
-// GOOD: React hook pattern for logout with FullStory
+// GOOD: React hook pattern for logout with Fullstory
 import { useCallback } from 'react';
 import { useAuth } from './auth-context';
 import { useNavigate } from 'react-router-dom';
@@ -148,7 +148,7 @@ function useLogout() {
     // Clear application auth state
     await clearAuth();
     
-    // Anonymize the FullStory session
+    // Anonymize the Fullstory session
     FS('setIdentity', { anonymous: true });
     
     // Navigate to home/login
@@ -216,7 +216,7 @@ async function switchAccount(newAccountId) {
 ### Example 4: Session Timeout Handler
 
 ```javascript
-// GOOD: Handling session timeout with FullStory
+// GOOD: Handling session timeout with Fullstory
 class SessionManager {
   constructor() {
     this.timeoutDuration = 30 * 60 * 1000; // 30 minutes
@@ -333,7 +333,7 @@ class PrivacyManager {
 ### Example 1: Forgetting to Anonymize on Logout
 
 ```javascript
-// BAD: No FullStory anonymization on logout
+// BAD: No Fullstory anonymization on logout
 function handleLogout() {
   clearAuthTokens();
   clearUserState();
@@ -350,7 +350,7 @@ function handleLogout() {
 
 **CORRECTED VERSION:**
 ```javascript
-// GOOD: Include FullStory anonymization
+// GOOD: Include Fullstory anonymization
 function handleLogout() {
   clearAuthTokens();
   clearUserState();
@@ -552,7 +552,7 @@ class LogoutService {
     clearUserState();
     clearLocalStorage();
     
-    // Anonymize FullStory
+    // Anonymize Fullstory
     FS('setIdentity', { anonymous: true });
     
     // Redirect
@@ -760,5 +760,5 @@ When helping developers implement User Anonymization:
 
 ---
 
-*This skill document was created to help Agent understand and guide developers in implementing FullStory's User Anonymization API correctly for web applications.*
+*This skill document was created to help Agent understand and guide developers in implementing Fullstory's User Anonymization API correctly for web applications.*
 
