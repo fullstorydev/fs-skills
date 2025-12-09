@@ -28,7 +28,7 @@ related_skills:
 
 ## Overview
 
-This meta-skill provides the strategic framework for deciding **where** to capture data in FullStory. Before implementing any FullStory API, use this guide to determine the appropriate scope for your data.
+This meta-skill provides the strategic framework for deciding **where** to capture data in Fullstory. Before implementing any Fullstory API, use this guide to determine the appropriate scope for your data.
 
 ### The Data Hierarchy
 
@@ -95,7 +95,7 @@ FS('setProperties', { type: 'page', properties: { productId: 'SKU-123' }});
 
 ### Rule 3: Let Inheritance Work
 
-FullStory's property inheritance:
+Fullstory's property inheritance:
 - **User properties** → Available on all sessions for that user
 - **Page properties** → Available on all elements/events on that page
 - **Element properties** → Inherited by child elements, AND child properties bubble up to parent on interaction
@@ -619,4 +619,4 @@ When helping developers with data scoping:
 
 ---
 
-*This meta-skill document provides strategic guidance for FullStory data semantic decoration. Refer to individual API skill documents for detailed implementation examples.*
+*This meta-skill document provides strategic guidance for Fullstory data semantic decoration. Refer to individual API skill documents for detailed implementation examples.*

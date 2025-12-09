@@ -74,7 +74,7 @@ This guide provides everything you need to implement Fullstory's Browser API v2 
 
 ## Industry Comparison at a Glance
 
-Different industries have vastly different requirements for FullStory implementation. This table summarizes the key differences:
+Different industries have vastly different requirements for Fullstory implementation. This table summarizes the key differences:
 
 ### Privacy Defaults by Industry
 
@@ -106,7 +106,7 @@ Different industries have vastly different requirements for FullStory implementa
 
 ### Key Regulatory Requirements
 
-| Industry | Primary Regulations | FullStory Requirements |
+| Industry | Primary Regulations | Fullstory Requirements |
 |----------|--------------------|-----------------------|
 | **Banking** | PCI DSS, GLBA, SOX | BAA not typically needed; exclude all financial data |
 | **E-commerce** | PCI DSS, CCPA, GDPR | Exclude payment fields; consent for EU |
@@ -184,7 +184,7 @@ window['_fs_org'] = 'YOUR_ORG_ID';
 window['_fs_namespace'] = 'FS';
 
 (function(m,n,e,t,l,o,g,y){
-    if (e in m) {if(m.console && m.console.log) { m.console.log('FullStory namespace conflict. Please set window["_fs_namespace"].');} return;}
+    if (e in m) {if(m.console && m.console.log) { m.console.log('Fullstory namespace conflict. Please set window["_fs_namespace"].');} return;}
     g=m[e]=function(a,b,s){g.q?g.q.push([a,b,s]):g._api(a,b,s);};g.q=[];
     o=n.createElement(t);o.async=1;o.crossOrigin='anonymous';o.src='https://'+_fs_script;
     y=n.getElementsByTagName(t)[0];y.parentNode.insertBefore(o,y);
@@ -207,10 +207,10 @@ window['_fs_namespace'] = 'FS';
 
 | Option | Description | Default |
 |--------|-------------|---------|
-| `_fs_org` | Your FullStory organization ID | **Required** |
+| `_fs_org` | Your Fullstory organization ID | **Required** |
 | `_fs_namespace` | Global variable name | `'FS'` |
 | `_fs_capture_on_startup` | Start capturing immediately | `true` |
-| `_fs_host` | FullStory host | `'fullstory.com'` |
+| `_fs_host` | Fullstory host | `'fullstory.com'` |
 | `_fs_script` | Script location | `'edge.fullstory.com/s/fs.js'` |
 
 ### How Fullstory Tracks Users (First-Party Cookies)
@@ -531,12 +531,12 @@ FS('trackEvent', {
 ### Pattern 1: React Integration
 
 ```jsx
-// hooks/useFullStory.js
+// hooks/useFullstory.js
 import { useEffect } from 'react';
 import { useAuth } from './useAuth';
 import { useLocation } from 'react-router-dom';
 
-export function useFullStory() {
+export function useFullstory() {
   const { user, isAuthenticated } = useAuth();
   const location = useLocation();
   
@@ -623,7 +623,7 @@ In browser DevTools:
 
 ### 3. Check User Identification
 
-After login, verify in FullStory:
+After login, verify in Fullstory:
 - Session shows user's displayName
 - User can be found by search
 - User properties appear in session details
@@ -631,7 +631,7 @@ After login, verify in FullStory:
 ### 4. Validate Events
 
 After triggering events:
-- Check Events panel in FullStory session
+- Check Events panel in Fullstory session
 - Verify event properties are captured correctly
 - Test event-based searches work
 
@@ -639,11 +639,11 @@ After triggering events:
 
 ## IX. Troubleshooting
 
-### FullStory Not Loading
+### Fullstory Not Loading
 
 ```javascript
 if (typeof FS === 'undefined') {
-  console.error('FullStory not loaded - check snippet installation');
+  console.error('Fullstory not loaded - check snippet installation');
 }
 ```
 
@@ -732,7 +732,7 @@ FS('setIdentity', { uid: user.id });
 
 ## Key Takeaways for Agent
 
-When helping developers get started with FullStory:
+When helping developers get started with Fullstory:
 
 1. **Privacy first**:
    - Ask what industry/regulations apply
@@ -777,4 +777,4 @@ When helping developers get started with FullStory:
 
 ---
 
-*This getting started guide provides the foundation for implementing FullStory Browser API v2. For detailed implementation guidance on any specific API or industry, refer to the linked skill documents.*
+*This getting started guide provides the foundation for implementing Fullstory Browser API v2. For detailed implementation guidance on any specific API or industry, refer to the linked skill documents.*

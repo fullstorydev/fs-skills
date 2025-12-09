@@ -16,7 +16,7 @@ Fullstory's User Consent API allows developers to implement privacy-compliant se
 
 - **GDPR Compliance**: Obtain consent before recording EU users
 - **CCPA Compliance**: Allow California users to opt-out
-- **Cookie Consent Integration**: Tie FullStory to your consent management platform (CMP)
+- **Cookie Consent Integration**: Tie Fullstory to your consent management platform (CMP)
 - **Selective Capture**: Record only users who have consented
 - **Privacy Controls**: Give users control over their data
 
@@ -203,7 +203,7 @@ class GDPRConsentManager {
       });
     }
     
-    console.log('FullStory capture started');
+    console.log('Fullstory capture started');
   }
   
   revokeConsent() {
@@ -212,7 +212,7 @@ class GDPRConsentManager {
     // Stop ALL Fullstory capture
     FS('shutdown');
     
-    console.log('FullStory capture stopped');
+    console.log('Fullstory capture stopped');
   }
   
   hasConsent() {
@@ -344,7 +344,7 @@ const RegionalConsent = {
       body: JSON.stringify(consentRecord)
     }).catch(console.warn);
     
-    // Update FullStory
+    // Update Fullstory
     FS('setIdentity', { consent: granted });
   },
   
@@ -360,16 +360,16 @@ const RegionalConsent = {
   withdrawConsent() {
     this.recordConsent(false, 'user_withdrawal');
     
-    // Clear any stored FullStory data
-    // Note: FullStory doesn't store client-side, this is for other trackers
+    // Clear any stored Fullstory data
+    // Note: Fullstory doesn't store client-side, this is for other trackers
     
     alert('Your consent has been withdrawn. Session recording has been disabled.');
   },
   
   // Required: Export user data (for GDPR data access requests)
   async requestDataExport() {
-    // Redirect to FullStory's data request process
-    // Or contact your FullStory admin
+    // Redirect to Fullstory's data request process
+    // Or contact your Fullstory admin
     window.location.href = '/privacy/data-request';
   }
 };
@@ -512,7 +512,7 @@ export function ConsentProvider({ children }) {
   });
   
   useEffect(() => {
-    // Sync with FullStory on mount and changes
+    // Sync with Fullstory on mount and changes
     if (consentStatus === 'granted') {
       FS('setIdentity', { consent: true });
     } else if (consentStatus === 'denied') {
@@ -595,14 +595,14 @@ function PrivacySettings() {
 - ✅ React-friendly state management
 - ✅ Context for app-wide access
 - ✅ Persists to localStorage
-- ✅ Syncs with FullStory
+- ✅ Syncs with Fullstory
 - ✅ Reusable components
 
 ### Example 5: Consent with User Identification
 
 ```javascript
 // GOOD: Handle consent and identification together
-class FullStoryManager {
+class FullstoryManager {
   constructor() {
     this.consentGranted = false;
     this.currentUser = null;
@@ -661,7 +661,7 @@ class FullStoryManager {
   }
 }
 
-const fsManager = new FullStoryManager();
+const fsManager = new FullstoryManager();
 
 // Wire up to your auth system
 authService.on('login', (user) => fsManager.onUserLogin(user));
@@ -688,7 +688,7 @@ consentBanner.on('decline', () => fsManager.onConsentDenied());
 // BAD: Capturing without checking consent first
 // This is the default snippet behavior - problematic for GDPR
 
-// Page loads, FullStory immediately starts capturing
+// Page loads, Fullstory immediately starts capturing
 // User hasn't consented yet!
 
 // Later, user clicks "Decline"
@@ -703,7 +703,7 @@ FS('setIdentity', { consent: false });  // Too late - already captured data!
 **CORRECTED VERSION:**
 ```javascript
 // GOOD: Configure snippet to wait for consent
-// In your FullStory snippet config:
+// In your Fullstory snippet config:
 window['_fs_capture_on_startup'] = false;
 
 // Then enable capture only after consent
@@ -822,7 +822,7 @@ async function initApp() {
 
 ```javascript
 // BAD: Not respecting CMP decisions
-// CMP is configured, but FullStory ignores it
+// CMP is configured, but Fullstory ignores it
 
 // OneTrust says analytics is declined, but:
 FS('setIdentity', { consent: true });  // BAD: Overriding CMP decision
@@ -958,7 +958,7 @@ ConsentManager.trackEvent('Page Viewed', { page: '/home' });
 
 ## SNIPPET CONFIGURATION
 
-To require consent before capture, configure the FullStory snippet:
+To require consent before capture, configure the Fullstory snippet:
 
 ```javascript
 window['_fs_capture_on_startup'] = false;  // Don't capture until consent
@@ -978,7 +978,7 @@ Then call `FS('setIdentity', { consent: true })` to start capture.
 **Symptom**: `consent: true` called but no session recorded
 
 **Common Causes**:
-1. ❌ FullStory script not loaded
+1. ❌ Fullstory script not loaded
 2. ❌ User on excluded page
 3. ❌ Privacy mode blocking FS
 
@@ -1036,5 +1036,5 @@ When helping developers with Consent API:
 
 ---
 
-*This skill document was created to help Agent understand and guide developers in implementing FullStory's User Consent API correctly for privacy-compliant web applications.*
+*This skill document was created to help Agent understand and guide developers in implementing Fullstory's User Consent API correctly for privacy-compliant web applications.*
 

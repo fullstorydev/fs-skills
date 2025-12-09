@@ -55,7 +55,7 @@ Media and entertainment have unique characteristics for session analytics:
 ### Special Consideration: COPPA Compliance
 
 If your platform serves children under 13:
-- ❌ Do NOT use FullStory on children's profiles
+- ❌ Do NOT use Fullstory on children's profiles
 - ❌ Do NOT capture any data about children's viewing habits
 - ✅ Only capture data for verified adult accounts
 
@@ -1075,7 +1075,7 @@ function onCancellationSaved(offer) {
 
 ## KEY TAKEAWAYS FOR AGENT
 
-When helping media clients with FullStory:
+When helping media clients with Fullstory:
 
 1. **Content engagement is core**: Track views, progress, completions, interactions
 2. **Subscription conversion is critical**: Track full funnel from browse to paid
@@ -1107,7 +1107,7 @@ When helping media clients with FullStory:
 ## REFERENCE LINKS
 
 - **COPPA Compliance**: https://www.ftc.gov/legal-library/browse/rules/childrens-online-privacy-protection-rule-coppa
-- **FullStory Analytics Events**: ../core/fullstory-analytics-events/SKILL.md
+- **Fullstory Analytics Events**: ../core/fullstory-analytics-events/SKILL.md
 - **User Properties**: ../core/fullstory-user-properties/SKILL.md
 - **Privacy Controls**: ../core/fullstory-privacy-controls/SKILL.md
 

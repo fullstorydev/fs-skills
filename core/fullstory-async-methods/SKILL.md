@@ -1,7 +1,7 @@
 ---
 name: fullstory-async-methods
 version: v2
-description: Comprehensive guide for implementing Fullstory's Asynchronous API methods (Async suffix variants) for web applications. Teaches proper Promise handling, await patterns, error handling, and when to use async vs fire-and-forget methods. Includes detailed good/bad examples for initialization waiting, session URL retrieval, and conditional flows to help developers handle FullStory's asynchronous nature correctly.
+description: Comprehensive guide for implementing Fullstory's Asynchronous API methods (Async suffix variants) for web applications. Teaches proper Promise handling, await patterns, error handling, and when to use async vs fire-and-forget methods. Includes detailed good/bad examples for initialization waiting, session URL retrieval, and conditional flows to help developers handle Fullstory's asynchronous nature correctly.
 related_skills:
   - fullstory-observe-callbacks
   - fullstory-identify-users
@@ -13,13 +13,13 @@ related_skills:
 
 ## Overview
 
-Fullstory's Browser API provides asynchronous versions of all methods by appending `Async` to the method name. These async methods return Promise-like objects that resolve when FullStory has started and the action completes. This is essential for:
+Fullstory's Browser API provides asynchronous versions of all methods by appending `Async` to the method name. These async methods return Promise-like objects that resolve when Fullstory has started and the action completes. This is essential for:
 
-- **Initialization Waiting**: Wait for FullStory to fully bootstrap before taking actions
+- **Initialization Waiting**: Wait for Fullstory to fully bootstrap before taking actions
 - **Session URL Retrieval**: Get the session replay URL for logging, support tickets, etc.
 - **Error Handling**: Know if an API call succeeded or failed
 - **Sequential Operations**: Ensure operations complete in order
-- **Conditional Logic**: Take action based on FullStory state
+- **Conditional Logic**: Take action based on Fullstory state
 
 ## Core Concepts
 
@@ -36,7 +36,7 @@ The object returned from async methods:
 - Can be `await`ed
 - Supports `.then()` chaining
 - **Important**: `.catch()` may not work in older browsers without Promise polyfill
-- May reject if FullStory fails to initialize
+- May reject if Fullstory fails to initialize
 
 ### Available Async Methods
 
@@ -86,7 +86,7 @@ The Promise may reject when:
 - User on unsupported browser
 - Error in `rec/settings` or `rec/page` calls
 - Organization over quota
-- FullStory script blocked by ad blocker (may not reliably reject)
+- Fullstory script blocked by ad blocker (may not reliably reject)
 
 ---
 
@@ -109,7 +109,7 @@ async function attachSessionToSupportTicket(ticketId) {
     console.log('Session attached to ticket:', sessionUrl);
     return sessionUrl;
   } catch (error) {
-    console.warn('Could not get FullStory session:', error);
+    console.warn('Could not get Fullstory session:', error);
     // Continue without session URL - non-critical
     return null;
   }
@@ -125,17 +125,17 @@ document.getElementById('help-button').addEventListener('click', async () => {
 
 **Why this is good:**
 - ✅ Uses try/catch for error handling
-- ✅ Gracefully handles FullStory being unavailable
+- ✅ Gracefully handles Fullstory being unavailable
 - ✅ Non-blocking failure (user can still submit ticket)
 - ✅ Returns null on failure for caller to handle
 
-### Example 2: Wait for FullStory Before Critical Actions
+### Example 2: Wait for Fullstory Before Critical Actions
 
 ```javascript
-// GOOD: Ensure FullStory is ready before identifying
+// GOOD: Ensure Fullstory is ready before identifying
 async function initializeAnalytics(user) {
   try {
-    // Wait for FullStory to be ready
+    // Wait for Fullstory to be ready
     await FS('setIdentityAsync', {
       uid: user.id,
       properties: {
@@ -157,7 +157,7 @@ async function initializeAnalytics(user) {
     
     return true;
   } catch (error) {
-    console.error('FullStory initialization failed:', error);
+    console.error('Fullstory initialization failed:', error);
     // Analytics failure shouldn't break the app
     return false;
   }
@@ -207,7 +207,7 @@ async function captureError(error, context = {}) {
     timestamp: new Date().toISOString()
   });
   
-  // Also log to FullStory if available
+  // Also log to Fullstory if available
   if (typeof FS !== 'undefined') {
     FS('log', {
       level: 'error',
@@ -230,21 +230,21 @@ window.addEventListener('error', (event) => {
 - ✅ Timeout prevents hanging on unresponsive FS
 - ✅ Error reporting continues without session URL
 - ✅ Enriches error context when available
-- ✅ Logs error to FullStory too
+- ✅ Logs error to Fullstory too
 
 ### Example 4: Observer Pattern with Async
 
 ```javascript
-// GOOD: Set up FullStory observers with proper cleanup
-async function setupFullStoryObservers() {
+// GOOD: Set up Fullstory observers with proper cleanup
+async function setupFullstoryObservers() {
   const observers = [];
   
   try {
-    // Observer for when FullStory starts capturing
+    // Observer for when Fullstory starts capturing
     const startObserver = await FS('observeAsync', {
       type: 'start',
       callback: () => {
-        console.log('FullStory started capturing');
+        console.log('Fullstory started capturing');
         initializeSessionTracking();
       }
     });
@@ -266,7 +266,7 @@ async function setupFullStoryObservers() {
     };
     
   } catch (error) {
-    console.warn('Could not set up FullStory observers:', error);
+    console.warn('Could not set up Fullstory observers:', error);
     return () => {}; // No-op cleanup
   }
 }
@@ -276,7 +276,7 @@ function App() {
   useEffect(() => {
     let cleanup = () => {};
     
-    setupFullStoryObservers().then(cleanupFn => {
+    setupFullstoryObservers().then(cleanupFn => {
       cleanup = cleanupFn;
     });
     
@@ -296,7 +296,7 @@ function App() {
 ### Example 5: Conditional Feature Based on FS Status
 
 ```javascript
-// GOOD: Enable features only if FullStory is working
+// GOOD: Enable features only if Fullstory is working
 class SessionReplayFeature {
   constructor() {
     this.isAvailable = false;
@@ -305,7 +305,7 @@ class SessionReplayFeature {
   
   async initialize() {
     try {
-      // Check if FullStory is capturing
+      // Check if Fullstory is capturing
       this.sessionUrl = await FS('getSessionAsync');
       this.isAvailable = true;
       return true;
@@ -411,12 +411,12 @@ async function completeCheckout(orderData) {
 
 ## ❌ BAD IMPLEMENTATION EXAMPLES
 
-### Example 1: Blocking App on FullStory
+### Example 1: Blocking App on Fullstory
 
 ```javascript
-// BAD: Blocking application startup on FullStory
+// BAD: Blocking application startup on Fullstory
 async function startApp() {
-  // This will hang if FullStory is blocked!
+  // This will hang if Fullstory is blocked!
   const sessionUrl = await FS('getSessionAsync');
   
   // App never starts if FS fails
@@ -425,7 +425,7 @@ async function startApp() {
 ```
 
 **Why this is bad:**
-- ❌ App hangs if FullStory blocked by ad blocker
+- ❌ App hangs if Fullstory blocked by ad blocker
 - ❌ Promise may never resolve
 - ❌ Critical path depends on non-critical service
 - ❌ No timeout or error handling
@@ -447,7 +447,7 @@ async function startApp() {
     ]);
     enableAnalyticsFeatures();
   } catch (error) {
-    console.warn('FullStory unavailable, continuing without analytics');
+    console.warn('Fullstory unavailable, continuing without analytics');
   }
 }
 ```
@@ -514,7 +514,7 @@ FS('getSessionAsync')
 
 **Why this is bad:**
 - ❌ `.catch()` not supported in browsers without Promise
-- ❌ FullStory's Promise-like object may not implement catch
+- ❌ Fullstory's Promise-like object may not implement catch
 - ❌ Errors may go unhandled
 
 **CORRECTED VERSION:**
@@ -611,7 +611,7 @@ async function onLogin(user) {
 function onLogin(user) {
   FS('setIdentity', { uid: user.id });  // Queued first
   FS('trackEvent', { name: 'Login' });  // Queued second
-  // FullStory processes queue in order
+  // Fullstory processes queue in order
 }
 ```
 
@@ -661,7 +661,7 @@ await safeFS('trackEventAsync', {
 ### Pattern 2: Initialization Status Manager
 
 ```javascript
-// Track FullStory initialization status
+// Track Fullstory initialization status
 class CaptureStatusManager {
   constructor() {
     this.status = 'pending';
@@ -789,7 +789,7 @@ class AnalyticsQueue {
 **Symptom**: `await FS('methodAsync')` hangs forever
 
 **Common Causes**:
-1. ❌ FullStory script blocked by ad blocker
+1. ❌ Fullstory script blocked by ad blocker
 2. ❌ Script failed to load
 3. ❌ Network issues preventing initialization
 
@@ -809,7 +809,7 @@ class AnalyticsQueue {
 4. ❌ Configuration error
 
 **Solutions**:
-- ✅ Check FullStory setup
+- ✅ Check Fullstory setup
 - ✅ Verify configuration
 - ✅ Handle rejections gracefully
 
@@ -819,7 +819,7 @@ class AnalyticsQueue {
 
 **Common Causes**:
 1. ❌ Browser doesn't have native Promise
-2. ❌ FullStory's Promise-like doesn't implement catch
+2. ❌ Fullstory's Promise-like doesn't implement catch
 
 **Solutions**:
 - ✅ Use async/await with try/catch
@@ -866,5 +866,5 @@ When helping developers with Async Methods:
 
 ---
 
-*This skill document was created to help Agent understand and guide developers in implementing FullStory's Asynchronous Methods correctly for web applications.*
+*This skill document was created to help Agent understand and guide developers in implementing Fullstory's Asynchronous Methods correctly for web applications.*
 

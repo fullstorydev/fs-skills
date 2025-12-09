@@ -22,7 +22,7 @@ Key use cases:
 - **Progressive Profiling**: Update properties as you learn more about the user
 - **Subscription/Plan Changes**: Track plan upgrades without re-identifying
 - **Preference Tracking**: Store user settings and preferences
-- **CRM Sync**: Mirror key CRM fields in FullStory
+- **CRM Sync**: Mirror key CRM fields in Fullstory
 
 ## Core Concepts
 
@@ -107,7 +107,7 @@ FS('setProperties', {
 
 | Field | Behavior |
 |-------|----------|
-| `displayName` | Shown in session list and user card in FullStory UI |
+| `displayName` | Shown in session list and user card in Fullstory UI |
 | `email` | Enables email-based search and HTTP API lookups |
 
 ---
@@ -377,7 +377,7 @@ tracker.updateFeatureEngagement({
 ### Example 5: CRM Data Sync
 
 ```javascript
-// GOOD: Sync key CRM fields to FullStory
+// GOOD: Sync key CRM fields to Fullstory
 async function syncCRMData(userId) {
   const crmData = await fetchFromCRM(userId);
   
@@ -633,7 +633,7 @@ function updateLastActivity() {
 
 **Why this is bad:**
 - ❌ Overwrites displayName with generic value
-- ❌ Loses actual user name in FullStory UI
+- ❌ Loses actual user name in Fullstory UI
 - ❌ Makes sessions hard to identify
 
 **CORRECTED VERSION:**
@@ -728,7 +728,7 @@ async function syncUserProperties() {
     fetchUsageStats(user.id)
   ]);
   
-  // Sync to FullStory
+  // Sync to Fullstory
   FS('setProperties', {
     type: 'user',
     properties: {
@@ -885,7 +885,7 @@ FS('trackEvent', {
 
 ### Properties Not Appearing
 
-**Symptom**: User properties don't show in FullStory
+**Symptom**: User properties don't show in Fullstory
 
 **Common Causes**:
 1. ❌ User not identified first
@@ -933,7 +933,7 @@ FS('trackEvent', {
 ## LIMITS AND CONSTRAINTS
 
 ### Property Limits
-- Check your FullStory plan for specific limits
+- Check your Fullstory plan for specific limits
 - Property names: alphanumeric, underscores, hyphens
 - Avoid high-cardinality properties
 
@@ -989,5 +989,5 @@ When helping developers implement User Properties:
 
 ---
 
-*This skill document was created to help Agent understand and guide developers in implementing FullStory's User Properties API correctly for web applications.*
+*This skill document was created to help Agent understand and guide developers in implementing Fullstory's User Properties API correctly for web applications.*
 

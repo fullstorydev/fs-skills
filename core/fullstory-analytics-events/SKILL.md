@@ -40,7 +40,7 @@ Fullstory's Analytics Events API allows developers to send custom event data tha
 
 ### Event Naming Conventions
 
-FullStory recommends semantic event naming following industry standards:
+Fullstory recommends semantic event naming following industry standards:
 
 ```
 [Object] [Action]
@@ -686,7 +686,7 @@ document.addEventListener('scroll', () => {
 - ❌ Will hit rate limits immediately
 - ❌ Drowns out meaningful events
 - ❌ No analytical value
-- ❌ FullStory already captures these automatically
+- ❌ Fullstory already captures these automatically
 
 **CORRECTED VERSION:**
 ```javascript
@@ -1039,10 +1039,10 @@ try {
 
 ### Events Not Appearing
 
-**Symptom**: Events don't show in FullStory
+**Symptom**: Events don't show in Fullstory
 
 **Common Causes**:
-1. ❌ FullStory script not loaded
+1. ❌ Fullstory script not loaded
 2. ❌ Event name exceeds 250 chars
 3. ❌ Properties exceed 512KB
 4. ❌ Rate limits exceeded
@@ -1055,7 +1055,7 @@ try {
 
 ### Events Have Missing Properties
 
-**Symptom**: Some properties missing in FullStory
+**Symptom**: Some properties missing in Fullstory
 
 **Common Causes**:
 1. ❌ Property values are undefined
@@ -1093,7 +1093,7 @@ When helping developers implement Analytics Events:
    - Use semantic event names (Object + Action)
    - Include meaningful properties
    - Use schema for non-string types
-   - Don't track what FullStory captures automatically
+   - Don't track what Fullstory captures automatically
 
 2. **Common mistakes to watch for**:
    - Generic event names ("click", "action")
@@ -1111,7 +1111,7 @@ When helping developers implement Analytics Events:
    - Follow e-commerce/SaaS event standards
    - Include context (page, source, timing)
    - Deduplicate rapid-fire events
-   - Test events appear in FullStory
+   - Test events appear in Fullstory
 
 ---
 
@@ -1123,5 +1123,5 @@ When helping developers implement Analytics Events:
 
 ---
 
-*This skill document was created to help Agent understand and guide developers in implementing FullStory's Analytics Events API correctly for web applications.*
+*This skill document was created to help Agent understand and guide developers in implementing Fullstory's Analytics Events API correctly for web applications.*
 

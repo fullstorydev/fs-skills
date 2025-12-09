@@ -972,10 +972,10 @@ Some enterprise customers may require special handling:
 
 ```javascript
 // Check for customer-specific privacy requirements
-function initializeFullStory(organization) {
+function initializeFullstory(organization) {
   // Some enterprises may opt out of session replay
   if (organization.settings.disableSessionReplay) {
-    // Don't initialize FullStory at all
+    // Don't initialize Fullstory at all
     return;
   }
   
@@ -1042,7 +1042,7 @@ function getOrgSizeRange(employeeCount) {
 
 ## KEY TAKEAWAYS FOR AGENT
 
-When helping SaaS clients with FullStory:
+When helping SaaS clients with Fullstory:
 
 1. **Feature adoption is core**: Track which features users discover and use
 2. **Onboarding is critical**: Comprehensive tracking of first-use experience
@@ -1075,7 +1075,7 @@ When helping SaaS clients with FullStory:
 
 ## REFERENCE LINKS
 
-- **FullStory for Product Teams**: https://www.fullstory.com/product-analytics/
+- **Fullstory for Product Teams**: https://www.fullstory.com/product-analytics/
 - **Element Properties**: ../core/fullstory-element-properties/SKILL.md
 - **Analytics Events**: ../core/fullstory-analytics-events/SKILL.md
 - **User Properties**: ../core/fullstory-user-properties/SKILL.md

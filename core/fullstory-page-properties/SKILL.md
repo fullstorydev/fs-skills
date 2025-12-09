@@ -1042,7 +1042,7 @@ FS('setProperties', {
 **Solutions**:
 - ✅ Always set pageName first
 - ✅ Use generic pageName values
-- ✅ Check pageName count in FullStory
+- ✅ Check pageName count in Fullstory
 
 ### Properties Not Persisting
 
@@ -1131,5 +1131,5 @@ When helping developers implement Page Properties:
 
 ---
 
-*This skill document was created to help Agent understand and guide developers in implementing FullStory's Page Properties API correctly for web applications.*
+*This skill document was created to help Agent understand and guide developers in implementing Fullstory's Page Properties API correctly for web applications.*
 

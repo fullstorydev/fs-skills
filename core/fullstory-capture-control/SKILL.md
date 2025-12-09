@@ -1,7 +1,7 @@
 ---
 name: fullstory-capture-control
 version: v2
-description: Comprehensive guide for implementing Fullstory's Capture Control APIs (shutdown/restart) for web applications. Teaches proper session management, capture pausing, and resource optimization. Includes detailed good/bad examples for performance-sensitive sections, privacy zones, and SPA cleanup to help developers control when FullStory captures sessions.
+description: Comprehensive guide for implementing Fullstory's Capture Control APIs (shutdown/restart) for web applications. Teaches proper session management, capture pausing, and resource optimization. Includes detailed good/bad examples for performance-sensitive sections, privacy zones, and SPA cleanup to help developers control when Fullstory captures sessions.
 related_skills:
   - fullstory-user-consent
   - fullstory-async-methods
@@ -13,7 +13,7 @@ related_skills:
 
 ## Overview
 
-Fullstory's Capture Control APIs allow developers to programmatically stop and restart session capture. This provides fine-grained control over when FullStory records sessions, which is useful for:
+Fullstory's Capture Control APIs allow developers to programmatically stop and restart session capture. This provides fine-grained control over when Fullstory records sessions, which is useful for:
 
 - **Performance Optimization**: Pause capture during resource-intensive operations
 - **Privacy Zones**: Stop capture in sensitive areas (PII entry, etc.)
@@ -93,10 +93,10 @@ Both methods take no parameters.
 ```javascript
 // GOOD: Pause capture during performance-intensive operations
 async function processLargeDataset(data) {
-  // Pause FullStory to free up resources
+  // Pause Fullstory to free up resources
   await FS('shutdownAsync');
   
-  console.log('FullStory paused for data processing');
+  console.log('Fullstory paused for data processing');
   
   try {
     // Perform heavy operation
@@ -118,7 +118,7 @@ async function processLargeDataset(data) {
       });
     }
     
-    console.log('FullStory resumed');
+    console.log('Fullstory resumed');
   }
 }
 
@@ -295,7 +295,7 @@ class RouteBasedCapture {
       });
     }
     
-    console.log('FullStory capture started');
+    console.log('Fullstory capture started');
   }
   
   async stopCapture() {
@@ -305,7 +305,7 @@ class RouteBasedCapture {
     await FS('shutdownAsync');
     this.isCapturing = false;
     
-    console.log('FullStory capture stopped');
+    console.log('Fullstory capture stopped');
   }
   
   setUser(user) {
@@ -335,7 +335,7 @@ const DevCaptureControls = {
     sessionStorage.setItem('fs_disabled', 'true');
     FS('shutdown');
     this.isOverridden = true;
-    console.log('FullStory disabled for this session');
+    console.log('Fullstory disabled for this session');
   },
   
   // Re-enable capture
@@ -344,7 +344,7 @@ const DevCaptureControls = {
     if (this.isOverridden) {
       FS('restart');
       this.isOverridden = false;
-      console.log('FullStory re-enabled');
+      console.log('Fullstory re-enabled');
     }
   },
   
@@ -353,7 +353,7 @@ const DevCaptureControls = {
     if (sessionStorage.getItem('fs_disabled') === 'true') {
       FS('shutdown');
       this.isOverridden = true;
-      console.log('FullStory disabled (session override)');
+      console.log('Fullstory disabled (session override)');
     }
     
     // Also check URL param for easy testing
@@ -860,7 +860,7 @@ function PaymentForm() {
 **Symptom**: After restart, no new session created
 
 **Common Causes**:
-1. ❌ FullStory blocked by ad blocker
+1. ❌ Fullstory blocked by ad blocker
 2. ❌ Page excluded from capture
 3. ❌ Rate limits hit
 
@@ -935,5 +935,5 @@ When helping developers with Capture Control:
 
 ---
 
-*This skill document was created to help Agent understand and guide developers in implementing FullStory's Capture Control APIs correctly for web applications.*
+*This skill document was created to help Agent understand and guide developers in implementing Fullstory's Capture Control APIs correctly for web applications.*
 
