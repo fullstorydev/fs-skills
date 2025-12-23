@@ -1,18 +1,45 @@
 ---
 name: fullstory-healthcare
 version: v2
-description: Industry-specific guide for implementing Fullstory in healthcare applications while maintaining HIPAA compliance. Covers PHI protection, patient portal UX, telehealth flows, appointment scheduling, and EHR integrations. Emphasizes that most healthcare data requires exclusion, not just masking, with detailed examples for compliant implementations.
+description: Industry-specific guide for implementing Fullstory in healthcare applications while maintaining HIPAA compliance. Covers PHI protection, patient portals, telehealth, pharmacy, medical devices, clinical trials, insurance portals, and regulatory requirements (HIPAA, FDA 21 CFR Part 11, COPPA).
 related_skills:
   - fullstory-privacy-controls
   - fullstory-privacy-strategy
   - fullstory-user-consent
   - fullstory-identify-users
   - fullstory-capture-control
+  - fullstory-analytics-events
 ---
 
 # Fullstory for Healthcare
 
 > ⚠️ **LEGAL DISCLAIMER**: This guidance is for educational purposes only and does not constitute legal, compliance, or regulatory advice. Healthcare regulations (HIPAA, HITECH, state privacy laws) are complex, jurisdiction-specific, and subject to change. Always consult with your legal, compliance, privacy officer, and security teams before implementing any data capture solution. Your organization is responsible for ensuring compliance with all applicable regulations.
+
+## Table of Contents
+
+1. [Industry Overview](#industry-overview)
+2. [HIPAA Framework](#hipaa-framework)
+3. [Implementation Architecture](#implementation-architecture)
+4. [Core Healthcare Contexts](#core-healthcare-contexts)
+   - [Public Health Information Pages](#public-health-information-pages)
+   - [Patient Portal Login](#patient-portal-login)
+   - [Patient Dashboard](#patient-dashboard)
+   - [Appointment Scheduling](#appointment-scheduling)
+   - [Telehealth / Virtual Visits](#telehealth--virtual-visits)
+   - [Health Records / Test Results](#health-records--test-results)
+   - [Patient Messaging](#patient-messaging)
+   - [Billing](#billing-healthcare-specific)
+5. [Additional Healthcare Contexts](#additional-healthcare-contexts) ⭐ NEW
+   - [Pharmacy & Prescription Management](#pharmacy--prescription-management)
+   - [Medical Devices & Digital Health Apps](#medical-devices--digital-health-apps)
+   - [Clinical Trials & Research](#clinical-trials--research)
+   - [Health Insurance Member Portals](#health-insurance-member-portals)
+   - [Pediatric Considerations](#pediatric-considerations)
+6. [Provider-Side Applications](#provider-side-applications)
+7. [Consent Considerations](#consent-considerations)
+8. [BAA and Compliance Checklist](#baa-and-compliance-checklist)
+9. [Key Takeaways for Agent](#key-takeaways-for-agent)
+10. [Reference Links](#reference-links)
 
 ## Industry Overview
 
@@ -76,6 +103,10 @@ PHI (Protected Health Information) includes any health information that can be l
 | **Images** | Photos, scans, ID documents | fs-exclude |
 | **Biometrics** | Height, weight, vitals | fs-exclude |
 | **Insurance** | Plan, member ID, claims | fs-exclude |
+| **Prescriptions** | Medication names, dosages, pharmacy, prescriber | fs-exclude |
+| **Device/wearable data** | Glucose, BP, heart rate, steps (when medical) | fs-exclude |
+| **Trial participation** | Study enrollment, participant ID, questionnaires | fs-exclude |
+| **Insurance claims** | Diagnoses, procedures, EOBs, provider visits | fs-exclude |
 
 ### HIPAA De-Identification Standards
 
@@ -116,26 +147,31 @@ Only capture what is absolutely necessary for UX analysis:
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│  WHAT YOU CAN CAPTURE (Limited)                                  │
+│  WHAT YOU CAN CAPTURE (Limited)                                 │
 ├─────────────────────────────────────────────────────────────────┤
-│  ✓ Navigation patterns (which pages visited)                     │
-│  ✓ Error occurrences (not error details)                         │
-│  ✓ Form completion rates (not form contents)                     │
-│  ✓ Button clicks (which buttons, not data submitted)             │
+│  ✓ Navigation patterns (which pages visited)                    │
+│  ✓ Error occurrences (not error details)                        │
+│  ✓ Form completion rates (not form contents)                    │
+│  ✓ Button clicks (which buttons, not data submitted)            │
 │  ✓ Page load times                                              │
 │  ✓ Device/browser information                                   │
 │  ✓ Session duration (generic)                                   │
 ├─────────────────────────────────────────────────────────────────┤
-│  WHAT YOU CANNOT CAPTURE                                         │
+│  WHAT YOU CANNOT CAPTURE                                        │
 ├─────────────────────────────────────────────────────────────────┤
-│  ✗ Any patient information                                       │
-│  ✗ Any provider information                                      │
+│  ✗ Any patient information                                      │
+│  ✗ Any provider information                                     │
 │  ✗ Any health/medical content                                   │
 │  ✗ Appointment details                                          │
-│  ✗ Insurance information                                         │
-│  ✗ Messages between patient and provider                         │
-│  ✗ Test results, diagnoses, medications                          │
-│  ✗ Images of any kind (could show PHI)                          │
+│  ✗ Insurance information                                        │
+│  ✗ Messages between patient and provider                        │
+│  ✗ Test results, diagnoses, medications                         │
+│  ✗Images of any kind (could show PHI)                           │
+│  ✗ Prescription information (medications, dosages, pharmacy)    │ 
+│  ✗Wearable/medical device data (vitals, glucose, activity when medical) │ 
+│  ✗Clinical trial participation or responses                     │
+│  ✗Insurance claims, diagnoses codes, EOBs                       │
+│  ✗Provider searches (reveals health concerns)                   │ 
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -645,7 +681,9 @@ FS('trackEvent', {
   </div>
 </div>
 ```
+---
 
+---
 ### Patient Messaging
 
 ```html
@@ -736,6 +774,353 @@ FS('trackEvent', {
 
 ---
 
+## Additional Healthcare Contexts
+
+### Pharmacy & Prescription Management
+
+```html
+<!-- Pharmacy Portal / Prescription Management -->
+<div class="pharmacy-portal">
+  <h1 class="fs-unmask">Prescription Management</h1>
+
+  <!-- Prescription list - EXCLUDE entirely -->
+  <div class="prescriptions-list fs-exclude">
+    <!-- Contains: medication names, dosages, prescriber, pharmacy = ALL PHI -->
+    <div class="prescription-card">
+      <h3>Metformin 500mg</h3>
+      <p>Prescribed by: Dr. Johnson</p>
+      <p>Refills remaining: 2</p>
+      <p>Pharmacy: CVS Main Street</p>
+    </div>
+  </div>
+
+  <!-- Refill request form - EXCLUDE -->
+  <div class="refill-request fs-exclude">
+    <!-- Medication selection = PHI -->
+    <select name="prescription">
+      <option>Metformin 500mg</option>
+      <option>Lisinopril 10mg</option>
+    </select>
+  </div>
+
+  <!-- Pharmacy selection - EXCLUDE (reveals patient location/preferences) -->
+  <div class="pharmacy-selector fs-exclude">
+    <h2>Select Pharmacy</h2>
+    <!-- Pharmacy choice can indicate location, conditions -->
+    <div class="pharmacy-option">
+      <p>CVS Pharmacy - Main St</p>
+      <p>Specialties: Diabetes, Cardiac care</p>
+    </div>
+  </div>
+
+  <!-- Action buttons - visible -->
+  <div class="actions fs-unmask">
+    <button>Request Refill</button>
+    <button>Transfer Prescription</button>
+  </div>
+</div>
+```
+
+```javascript
+// Pharmacy tracking - generic funnel only
+FS('trackEvent', {
+  name: 'Refill Request Started',
+  properties: {
+    request_method: 'online',  // or "phone", "auto_refill"
+    // NEVER: medication name, dosage, pharmacy name
+  }
+});
+
+FS('trackEvent', {
+  name: 'Refill Request Completed',
+  properties: {
+    prescription_count: 2,  // Count only, no details
+    delivery_method: 'pickup',  // or "mail"
+    // NEVER: specific medications, pharmacy location
+  }
+});
+```
+
+### Medical Devices & Digital Health Apps
+
+```html
+<!-- Digital Health Dashboard -->
+<div class="health-dashboard">
+  <h1 class="fs-unmask">Health Metrics</h1>
+
+  <!-- ALL device data - EXCLUDE -->
+  <div class="health-metrics fs-exclude">
+    <!-- Wearable/device data = PHI -->
+    <div class="metric-card">
+      <h3>Blood Glucose</h3>
+      <p class="value">120 mg/dL</p>
+      <p class="status">In Range</p>
+      <p class="timestamp">Last reading: 2 hours ago</p>
+    </div>
+
+<div class="metric-card">
+  <h3>Blood Pressure</h3>
+  <p class="value">118/76 mmHg</p>
+  <p class="status">Normal</p>
+</div>
+
+<div class="metric-card">
+  <h3>Heart Rate</h3>
+  <p class="value">72 bpm</p>
+</div>
+
+<!-- Activity data when health-related = PHI -->
+<div class="metric-card">
+  <h3>Daily Steps</h3>
+  <p class="value">8,450 steps</p>
+  <p>Goal: 10,000</p>
+</div>
+
+</div
+  <!-- Device management - EXCLUDE (reveals conditions) -->
+  <div class="connected-devices fs-exclude">
+    <h2>Connected Devices</h2>
+    <div class="device">
+      <p>Continuous Glucose Monitor</p>
+      <p>Model: Dexcom G6</p>
+      <p>Last sync: 5 minutes ago</p>
+    </div>
+  </div>
+</div>
+```
+
+```javascript
+// Device tracking - technical only, NO health data
+FS('trackEvent', {
+  name: 'Device Data Synced',
+  properties: {
+    sync_method: 'bluetooth',  // or "wifi", "manual"
+    sync_duration_ms: 2500,
+    // NEVER: device readings, health metrics, device model (reveals condition)
+  }
+});
+
+FS('trackEvent', {
+  name: 'Device Connection Failed',
+  properties: {
+    error_type: 'bluetooth_timeout',
+    retry_attempted: true,
+    // Technical troubleshooting only
+  }
+});
+```
+
+### Clinical Trials & Research Applications
+
+```html
+<!-- Clinical Trial Participant Portal -->
+<div class="trial-portal">
+  <h1 class="fs-unmask">Clinical Trial Portal</h1>
+
+  <!-- Trial enrollment status - EXCLUDE -->
+  <div class="enrollment-status fs-exclude">
+    <!-- Trial participation is PHI -->
+    <p>Study: Phase III Diabetes Treatment Trial</p>
+    <p>Your participant ID: PT-8847</p>
+    <p>Enrollment date: Oct 15, 2024</p>
+    <p>Study coordinator: Dr. Martinez</p>
+  </div>
+
+  <!-- Questionnaires - EXCLUDE ENTIRELY -->
+  <div class="trial-questionnaire fs-exclude">
+    <h2>Weekly Health Assessment</h2>
+    <!-- Responses reveal health status -->
+    <form>
+      <label>Rate your symptoms this week (1-10)</label>
+      <input type="range" min="1" max="10" />
+
+  <label>Any new side effects?</label>
+  <textarea></textarea>
+  
+  <label>Medication adherence</label>
+  <select>
+    <option>Took all doses</option>
+    <option>Missed 1-2 doses</option>
+  </select>
+</form>
+
+</div
+  <!-- Visit schedule - EXCLUDE -->
+  <div class="visit-schedule fs-exclude">
+    <h2>Upcoming Study Visits</h2>
+    <!-- Reveals trial participation -->
+    <div class="visit">
+      <p>Week 12 Assessment</p>
+      <p>Dec 20, 2024 at 9:00 AM</p>
+      <p>Location: Research Center, Building B</p>
+    </div>
+  </div>
+
+  <!-- Action buttons - visible -->
+  <div class="actions fs-unmask">
+    <button>Complete Survey</button>
+    <button>View Schedule</button>
+    <button>Contact Coordinator</button>
+  </div>
+</div>
+```
+
+```javascript
+// Clinical trial tracking - NEVER reveal participation
+FS('trackEvent', {
+  name: 'Study Survey Started',
+  properties: {
+    survey_type: 'weekly_assessment',
+    delivery_method: 'portal',  // or "email_link", "app"
+    // NEVER: study name, participant ID, responses
+  }
+});
+
+// Adverse event reporting - technical only
+FS('trackEvent', {
+  name: 'Adverse Event Reported',
+  properties: {
+    report_method: 'online_form',
+    urgency_level: 'routine',  // Generic severity only
+    // NEVER: event details, symptoms, participant info
+  }
+});
+```
+
+### Health Insurance Member Portals
+
+```html
+<!-- Health Insurance Member Portal -->
+<div class="insurance-portal">
+  <h1 class="fs-unmask">Member Portal</h1>
+
+  <!-- Coverage summary - EXCLUDE -->
+  <div class="coverage-summary fs-exclude">
+    <!-- Plan details linked to member = identifiable -->
+    <p>Plan: Blue Cross PPO Gold</p>
+    <p>Member ID: BC123456789</p>
+    <p>Group: Tech Corp Employees</p>
+    <p>Deductible: $500 / $1,500</p>
+  </div>
+
+  <!-- Claims history - EXCLUDE ENTIRELY (reveals PHI) -->
+  <div class="claims-list fs-exclude">
+    <!-- Claims = what care was received = PHI -->
+    <div class="claim">
+      <p>Date of Service: Nov 10, 2024</p>
+      <p>Provider: Dr. Johnson, Internal Medicine</p>
+      <p>Service: Office Visit - Follow-up</p>
+      <p>Diagnosis: Type 2 Diabetes</p>  <!-- PHI! -->
+      <p>Billed: $150.00</p>
+      <p>Allowed: $120.00</p>
+      <p>You owe: $30.00</p>
+    </div>
+  </div>
+
+  <!-- EOB (Explanation of Benefits) - EXCLUDE -->
+  <div class="eob-viewer fs-exclude">
+    <!-- EOBs contain diagnosis codes, procedures = PHI -->
+    <iframe src="/eob/claim-12345.pdf"></iframe>
+  </div>
+
+  <!-- Provider search - EXCLUDE (search reveals health needs) -->
+  <div class="provider-search fs-exclude">
+    <h2>Find a Provider</h2>
+    <input type="text" placeholder="Search by specialty, condition, or name" />
+    <!-- Search query = health information seeking = PHI context -->
+
+<div class="search-filters">
+  <label>Specialty</label>
+  <select>
+    <option>Endocrinology</option>  <!-- Reveals suspected condition -->
+    <option>Cardiology</option>
+    <option>Mental Health</option>
+  </select>
+</div>
+
+</div
+  <!-- ID card - EXCLUDE (contains member ID, group) -->
+  <div class="id-card fs-exclude">
+    <h2>Digital ID Card</h2>
+    <!-- Contains member ID, group number = identifiers -->
+    <img src="/id-card/member-123.png" alt="Insurance ID" />
+  </div>
+
+  <!-- Action buttons - visible -->
+  <div class="actions fs-unmask">
+    <button>View Claims</button>
+    <button>Find Provider</button>
+    <button>Download ID Card</button>
+  </div>
+</div>
+```
+
+```javascript
+// Insurance portal tracking - generic only
+FS('trackEvent', {
+  name: 'Claims History Viewed',
+  properties: {
+    view_type: 'summary',  // or "detailed", "by_provider"
+    date_range: '90_days',
+    // NEVER: claim details, diagnoses, providers, amounts
+  }
+});
+
+FS('trackEvent', {
+  name: 'Provider Search Performed',
+  properties: {
+    search_method: 'specialty_filter',  // or "name", "location"
+    results_count: 15,  // Count only
+    // NEVER: specialty searched, provider names, location details
+  }
+});
+```
+
+### Pediatric Healthcare Applications
+
+Pediatric applications face **dual compliance**: HIPAA + **COPPA** (Children's Online Privacy Protection Act) for users under 13.
+
+**Additional COPPA requirements:**
+- Parental consent required for data collection
+- Cannot track children's behavior for targeted advertising
+- Stricter notice requirements
+- Must allow parents to review and delete child's data
+
+**Fullstory Implications:**
+
+```html
+<!-- Pediatric Portal -->
+<div class="pediatric-portal">
+  <!-- Parent/Guardian interface - careful capture -->
+  <div class="parent-section">
+    <h1 class="fs-unmask">Parent Dashboard</h1>
+
+<!-- Child's info - EXCLUDE (PHI + COPPA) -->
+<div class="child-profile fs-exclude">
+  <p>Patient: Emily Smith (Age 8)</p>
+  <p>Pediatrician: Dr. Jones</p>
+</div>
+  
+</div
+  <!-- Child-facing interface - NEVER CAPTURE -->
+  <div class="child-section fs-exclude">
+    <!-- COPPA: Cannot track children's behavior -->
+    <div class="games-activities">
+      <!-- Do not capture any child interactions -->
+    </div>
+  </div>
+</div>
+```
+
+**Recommendation:** 
+- Use Fullstory **only for parent/guardian interfaces**
+- **Never** on child-facing content or interactions
+- Consider age-gating Fullstory initialization
+- Verify parental consent before any capture
+---
+
+---
+
 ## What About Provider-Side Applications?
 
 For EHR systems and provider-facing applications:
@@ -808,6 +1193,11 @@ function initializeFullstoryWithConsent() {
 - [ ] **Billing details excluded** (reveal services received)
 - [ ] **Legal/compliance review** completed
 - [ ] **Security team review** completed
+- [ ] **Prescription data excluded** (medication names, dosages)
+- [ ] **Device/wearable health data excluded**
+- [ ] **Clinical trial portals** reviewed (consider not using FS)
+- [ ] **Insurance claims excluded** (diagnoses, procedures, EOBs)
+- [ ] **Provider searches excluded** (specialty searches reveal health needs)
 
 ---
 
@@ -866,13 +1256,43 @@ When helping healthcare clients with Fullstory:
 
 ## REFERENCE LINKS
 
-- **HIPAA Overview**: https://www.hhs.gov/hipaa/
-- **Fullstory HIPAA Compliance**: https://www.fullstory.com/legal/hipaa/
-- **Privacy Controls**: ../core/fullstory-privacy-controls/SKILL.md
-- **Privacy Strategy**: ../meta/fullstory-privacy-strategy/SKILL.md
-- **User Consent**: ../core/fullstory-user-consent/SKILL.md
+### Fullstory Official Documentation
+- **HIPAA & Compliance Overview**: https://help.fullstory.com/hc/en-us/articles/360020624254-Fullstory-s-Comprehensive-Compliance-Program
+- **Business Associate Agreement (BAA)**: https://help.fullstory.com/hc/en-us/articles/17635706856599-Business-Associate-Agreement-BAA
+- **Security Overview / Security Policy**: https://www.fullstory.com/resources/security-policy/
+- **Privacy by Default (Product Page)**: https://www.fullstory.com/platform/private-by-default/
+- **Privacy by Default (Help Article)**: https://help.fullstory.com/hc/en-us/articles/360044349073-Fullstory-Private-by-Default
+
+### Regulatory Resources
+- **HIPAA Home**: https://www.hhs.gov/hipaa/
+- **HIPAA Privacy Rule Summary**: https://www.hhs.gov/hipaa/for-professionals/privacy/laws-regulations/index.html
+- **HIPAA Security Rule Overview**: https://www.hhs.gov/hipaa/for-professionals/security/
+- **De-Identification Guidance**: https://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/
+- **FDA 21 CFR Part 11 Guidance**: https://www.fda.gov/regulatory-information/search-fda-guidance-documents/part-11-electronic-records-electronic-signatures-scope-and-application
+- **COPPA Rule (Primary Text/Summary)**: https://www.ftc.gov/legal-library/browse/rules/childrens-online-privacy-protection-rule-coppa
+- **COPPA Rulemaking Proceedings**: https://www.ftc.gov/enforcement/rules/rulemaking-regulatory-reform-proceedings/childrens-online-privacy-protection-rule
+- **COPPA + HIPAA Intersection FAQ**: https://www.hhs.gov/hipaa/for-professionals/faq/227/does-hipaa-apply-to-an-health-app/index.html
+
+### Related Fullstory Skills
+- **Privacy Controls**: ../../core/fullstory-privacy-controls/SKILL.md
+- **Privacy Strategy**: ../../meta/fullstory-privacy-strategy/SKILL.md
+- **User Consent**: ../../core/fullstory-user-consent/SKILL.md
+- **Identify Users**: ../../core/fullstory-identify-users/SKILL.md
+- **Analytics Events**: ../../core/fullstory-analytics-events/SKILL.md
+- **Capture Control**: ../../core/fullstory-capture-control/SKILL.md
+
+### Fullstory Developer Documentation
+- **Browser API Overview**: https://developer.fullstory.com/browser/getting-started/
+- **Browser API Reference**: https://developer.fullstory.com/browser/
+- **Privacy Controls API**: https://developer.fullstory.com/browser/privacy-controls/
+- **Custom Properties**: https://developer.fullstory.com/browser/custom-properties/
+- **Analytics Events**: https://developer.fullstory.com/browser/capture-events/analytics-events/
+
+### Healthcare-Specific Resources
+- **HIPAA Breach Notification Rule**: https://www.hhs.gov/hipaa/for-professionals/breach-notification/
+- **HITECH Act Enforcement Rule**: https://www.hhs.gov/hipaa/for-professionals/special-topics/hitech-act-enforcement-interim-final-rule/
+- **Health App Developer Guidance**: https://www.hhs.gov/hipaa/for-professionals/special-topics/health-apps/
 
 ---
 
 *This skill document is specific to healthcare implementations. Always consult your HIPAA compliance officer and legal counsel before implementing Fullstory in a healthcare context. This guide does not constitute legal advice.*
-
