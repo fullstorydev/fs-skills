@@ -1119,6 +1119,7 @@ Pediatric applications face **dual compliance**: HIPAA + **COPPA** (Children's O
 - Verify parental consent before any capture
 ---
 
+
 ---
 
 ## What About Provider-Side Applications?
