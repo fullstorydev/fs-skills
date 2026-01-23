@@ -1,5 +1,5 @@
 ---
-name: fullstory-data-scoping-decoration
+name: universal-data-scoping-and-decoration
 version: v2
 description: Strategic meta-skill for Fullstory data semantic decoration. Teaches when to use page properties vs element properties vs user properties vs events. Provides a deterministic framework for scoping data at the right level to maximize searchability, avoid duplication, and maintain consistency. Essential foundation for proper Fullstory implementation across all API types.
 related_skills:

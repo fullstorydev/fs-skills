@@ -4,7 +4,7 @@
 
 ## 🎯 What is FSR?
 
-The **Fullstory Skills Repository (FSR)** is a structured collection of AI Agent Skills providing expert-level guidance for Fullstory semantic decoration in digital experiences (FSD). FSR enables AI coding assistants to decorate digital experiences with semantic meaning that is automatically extracted by Fullstory at time of autocapture and turned into analytic labels and measurable properties. This exposes behavioral digital experience usage to Computer Use Agents and unlocks high fidelity analytic measurement directly in the DOM or mobile app view tree:
+The **Fullstory Skills Repository (FSR)** is a structured collection of AI Agent Skills that provide expert-level guidance for Fullstory semantic decoration for digital experiences (FSD). FSD enables AI coding assistants to decorate digital experiences with semantic meaning. This exposes behavioral digital experience usage to Computer Use Agents and unlocks high fidelity analytic measurement directly in the DOM or mobile app view tree:
 
 - Guide developers through API implementation with good/bad examples
 - Apply industry-specific privacy requirements automatically
@@ -14,6 +14,32 @@ The **Fullstory Skills Repository (FSR)** is a structured collection of AI Agent
 ---
 
 ## 🆕 Latest Enhancements
+
+### Platform-Split Architecture (NEW)
+All **core skills** and **framework skills** now use a three-file structure:
+- **`SKILL.md`** — Platform-agnostic core concepts, API parameters, best practices (START HERE)
+- **`SKILL-WEB.md`** — JavaScript/TypeScript implementation for web
+- **`SKILL-MOBILE.md`** — iOS (Swift), Android (Kotlin), Flutter (Dart), React Native
+
+**Always read SKILL.md first** for concepts, then the platform-specific file for implementation code.
+
+### SDK Installation vs API Usage
+The skills repository covers **API usage** (how to identify users, track events, etc.). For **SDK installation**, see official Fullstory documentation:
+- **Web**: [Getting Started with Web](https://developer.fullstory.com/browser/getting-started/)
+- **Mobile**: See `meta/fullstory-getting-started/SKILL.md` for links to all mobile platform installation guides
+
+### Mobile Instrumentation Orchestrator (NEW)
+The new `mobile-instrumentation-orchestrator` skill provides sequencing logic for mobile SDK implementation:
+- **Privacy → Identity → Navigation → Interaction → Diagnostics**
+- Routes to appropriate `SKILL-MOBILE.md` files for each platform
+
+### Stable Selectors — Now Cross-Platform
+The stable selectors skill now covers **both web and mobile**:
+- **Web**: `data-component`, `data-element`, `data-action` attributes
+- **iOS**: `accessibilityIdentifier`
+- **Android**: `testTag`, `contentDescription`
+- **React Native**: `testID`
+- **Flutter**: `Key`, `Semantics`
 
 ### Privacy & Cookie Documentation
 - **Private by Default Mode**: Complete documentation for Fullstory's privacy-first capture mode
@@ -30,17 +56,6 @@ The **Fullstory Skills Repository (FSR)** is a structured collection of AI Agent
 | **SaaS** | AI/ML feature tracking patterns |
 | **Travel** | TSA Secure Flight requirements |
 | **Media** | Accessibility feature tracking (WCAG compliance) |
-
-### CUA Readiness (Stable Selectors)
-- **AI Agent Navigation**: How stable selectors enable Computer User Agents
-- **Extended Attributes**: `data-action`, `data-state`, `data-variant`, `data-testid`
-- **Modern Frameworks**: RSC, Qwik, Solid, Astro patterns
-- **Advanced Patterns**: Virtualized lists, Shadow DOM, micro-frontends
-
-### Data Scoping Enhancements
-- **Child→Parent Inheritance**: Property bubbling on parent interaction
-- **Privacy at Each Scope**: Guidance for each scope level
-- **All 7 Industries**: Scope recommendations per vertical
 
 ---
 
@@ -229,34 +244,43 @@ Before submitting your skill:
 
 ## 📚 Skill Categories
 
-### Core API Skills (12)
+### Core API Skills (12 skills × 3 files = 36 files)
 
-Technical implementation guides for each Fullstory Browser API:
+Technical implementation guides for each Fullstory API. **Each skill has three files:**
+
+| File | Content |
+|------|---------|
+| `SKILL.md` | Core concepts, API parameters, best practices (platform-agnostic) |
+| `SKILL-WEB.md` | JavaScript/TypeScript implementation |
+| `SKILL-MOBILE.md` | iOS, Android, Flutter, React Native implementation |
+
+| Skill | Purpose | Platforms |
+|-------|---------|-----------|
+| `fullstory-identify-users` | Link sessions to users | Web + Mobile |
+| `fullstory-anonymize-users` | End identified sessions | Web + Mobile |
+| `fullstory-user-properties` | Set user attributes | Web + Mobile |
+| `fullstory-page-properties` | Set page/screen context | Web + Mobile |
+| `fullstory-element-properties` | Capture interaction-level data | Web + Mobile |
+| `fullstory-analytics-events` | Track discrete business events | Web + Mobile |
+| `fullstory-privacy-controls` | Implement masking/exclusion | Web + Mobile |
+| `fullstory-user-consent` | GDPR/CCPA consent management | Web + Mobile |
+| `fullstory-capture-control` | Pause/resume recording | Web + Mobile |
+| `fullstory-observe-callbacks` | Session URL and lifecycle events | Web only* |
+| `fullstory-logging` | Error and debug logging | Web + Mobile |
+| `fullstory-async-methods` | Promise-based API patterns | Web only* |
+
+*Web-only APIs have mobile equivalent patterns documented in their `SKILL-MOBILE.md` files.
+
+### Meta/Strategy Skills (4)
+
+Strategic guidance for implementation planning. Meta skills **orchestrate** which core skills to use and in what order.
 
 | Skill | Purpose |
 |-------|---------|
-| `fullstory-identify-users` | Link sessions to users via `setIdentity` |
-| `fullstory-anonymize-users` | End identified sessions, handle logout |
-| `fullstory-user-properties` | Set user attributes for segmentation |
-| `fullstory-page-properties` | Set page context for Journeys |
-| `fullstory-element-properties` | Capture interaction-level data |
-| `fullstory-analytics-events` | Track discrete business events |
-| `fullstory-privacy-controls` | Implement `fs-exclude`, `fs-mask`, `fs-unmask` |
-| `fullstory-user-consent` | GDPR/CCPA consent management |
-| `fullstory-capture-control` | Pause/resume recording |
-| `fullstory-observe-callbacks` | Session URL and lifecycle events |
-| `fullstory-logging` | Error and debug logging |
-| `fullstory-async-methods` | Promise-based API patterns |
-
-### Meta/Strategy Skills (3)
-
-Strategic guidance for implementation planning:
-
-| Skill | Purpose |
-|-------|---------|
-| `fullstory-getting-started` | Entry point with complete skill inventory and industry comparisons |
+| `fullstory-getting-started` | **THE definitive entry point** — skill architecture, platform routing, SDK installation links |
 | `fullstory-privacy-strategy` | Decision framework for data privacy |
 | `universal-data-scoping-and-decoration` | Where to put data (user vs page vs element vs event) |
+| `mobile-instrumentation-orchestrator` | Sequencing logic for mobile SDK implementation (Privacy → Identity → Navigation → Events) |
 
 ### Industry-Specific Skills (7)
 
@@ -272,13 +296,21 @@ Tailored guidance for specific verticals:
 | **Travel & Hospitality** | `fullstory-travel` | Booking funnels; ancillaries; passport/ID exclusion |
 | **Media & Entertainment** | `fullstory-media-entertainment` | Video tracking; subscriptions; COPPA compliance |
 
-### Framework Integration Skills (1)
+### Framework Integration Skills (2 skills × 3 files = 6 files)
 
 | Skill | Purpose |
 |-------|---------|
-| `fullstory-stable-selectors` | Universal pattern for stable `data-*` attributes across ALL frameworks |
+| `fullstory-stable-selectors` | Universal pattern for stable identifiers across ALL platforms |
+| `fullstory-test-automation` | Test script generation leveraging Fullstory decoration |
 
-> **Why Stable Selectors?** Modern CSS tools (CSS Modules, styled-components, Tailwind) generate dynamic class names that change every build. Stable `data-*` attributes ensure Fullstory searches, defined elements, and click maps work reliably across deployments.
+**File Structure (same three-file pattern as core skills):**
+| File | Content |
+|------|---------|
+| `SKILL.md` | Core concepts (platform-agnostic) |
+| `SKILL-WEB.md` | Web implementation (JavaScript/TypeScript) |
+| `SKILL-MOBILE.md` | Mobile implementation (iOS, Android, Flutter, React Native) |
+
+> **Why Stable Selectors?** Modern build tools generate dynamic identifiers that change every build—CSS class hashes on web, auto-generated view IDs on mobile. Stable semantic identifiers ensure Fullstory searches, defined elements, and click maps work reliably across deployments.
 
 #### CUA Readiness (Computer User Agents)
 
@@ -287,30 +319,29 @@ The stable selectors skill prepares your application for AI-driven automation:
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │  Without Stable Selectors (Brittle)                              │
-│  AI sees: <button class="sc-abc123 xyz789">                      │
-│  → Class names change every build, AI navigation breaks         │
+│  Web: <button class="sc-abc123 xyz789">                          │
+│  iOS: UIButton at 0x7f8b4c0123a0                                │
+│  → Identifiers change every build/launch, AI navigation breaks  │
 ├─────────────────────────────────────────────────────────────────┤
 │  With Stable Selectors (Resilient)                               │
-│  AI sees: <button data-component="Checkout" data-element="pay"> │
+│  Web: <button data-component="Checkout" data-element="pay">     │
+│  iOS: accessibilityIdentifier = "Checkout.pay"                  │
 │  → Semantic, stable, machine-readable forever                   │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-#### Framework Coverage
+#### Platform Coverage
 
-This single skill **replaces the legacy React plugins** (`fullstory-babel-plugin-annotate-react`, `eslint-plugin-annotate-react`) with framework-agnostic guidance:
+| Platform | Stable Identifier Mechanism |
+|----------|----------------------------|
+| React / Next.js / Vue / Angular | `data-component`, `data-element` attributes |
+| Svelte / Solid / Astro | `data-component`, `data-element` attributes |
+| iOS (Swift / SwiftUI) | `accessibilityIdentifier` |
+| Android (Kotlin / Compose) | `contentDescription`, `testTag` |
+| React Native | `testID` |
+| Flutter | `Key`, `Semantics` |
 
-| Framework | Supported |
-|-----------|-----------|
-| React / Next.js (App Router, RSC) | ✅ |
-| Angular | ✅ |
-| Vue.js / Nuxt | ✅ |
-| Svelte / SvelteKit | ✅ |
-| Qwik / Solid / Astro | ✅ |
-| Vanilla JS / Web Components | ✅ |
-| Server-rendered (PHP, Django, Rails) | ✅ |
-
-No external plugins required—just add `data-component` and `data-element` attributes to your markup.
+No external plugins required—use native platform mechanisms with consistent naming conventions.
 
 ---
 
@@ -384,23 +415,30 @@ Fullstory offers a **Private by Default mode** that inverts the capture default�
 skills/
 ├── README.md                          # This file
 │
-├── core/                              # 12 Core API Skills
+├── core/                              # 12 Core API Skills (36 files)
 │   ├── fullstory-analytics-events/
+│   │   ├── SKILL.md                   # Core concepts (platform-agnostic)
+│   │   ├── SKILL-WEB.md               # JavaScript/TypeScript implementation
+│   │   └── SKILL-MOBILE.md            # iOS, Android, Flutter, React Native
 │   ├── fullstory-anonymize-users/
-│   ├── fullstory-async-methods/
+│   │   ├── SKILL.md
+│   │   ├── SKILL-WEB.md
+│   │   └── SKILL-MOBILE.md
+│   ├── fullstory-async-methods/       # (web-only API)
 │   ├── fullstory-capture-control/
 │   ├── fullstory-element-properties/
 │   ├── fullstory-identify-users/
 │   ├── fullstory-logging/
-│   ├── fullstory-observe-callbacks/
+│   ├── fullstory-observe-callbacks/   # (web-only API)
 │   ├── fullstory-page-properties/
 │   ├── fullstory-privacy-controls/
 │   ├── fullstory-user-consent/
 │   └── fullstory-user-properties/
 │
-├── meta/                              # 3 Meta/Strategy Skills
+├── meta/                              # 4 Meta/Strategy Skills
 │   ├── fullstory-getting-started/
 │   ├── fullstory-privacy-strategy/
+│   ├── mobile-instrumentation-orchestrator/  # Mobile SDK sequencing
 │   └── universal-data-scoping-and-decoration/
 │
 ├── industry/                          # 7 Industry-Specific Skills
@@ -412,73 +450,126 @@ skills/
 │   ├── fullstory-saas/
 │   └── fullstory-travel/
 │
-└── framework/                         # 1 Framework Integration Skill
-    └── fullstory-stable-selectors/    # Universal pattern for any framework
+└── framework/                         # 2 Framework Integration Skills (6 files)
+    ├── fullstory-stable-selectors/
+    │   ├── SKILL.md                   # Core concepts (platform-agnostic)
+    │   ├── SKILL-WEB.md               # Web: data-* attributes
+    │   └── SKILL-MOBILE.md            # Mobile: accessibilityIdentifier, testID, Key
+    └── fullstory-test-automation/
+        ├── SKILL.md                   # Core concepts (platform-agnostic)
+        ├── SKILL-WEB.md               # Web test generation
+        └── SKILL-MOBILE.md            # Mobile test generation
 ```
 
 ---
 
 ## 📖 Skill Format
 
-All FSR skills follow a consistent format:
+### Platform-Split Structure (Core Skills)
 
+Core skills use a **three-file structure** for platform-specific implementation:
+
+```
+fullstory-[skill-name]/
+├── SKILL.md           # Core concepts (platform-agnostic)
+├── SKILL-WEB.md       # Web implementation (JavaScript/TypeScript)
+└── SKILL-MOBILE.md    # Mobile implementation (iOS, Android, Flutter, RN)
+```
+
+**SKILL.md Frontmatter:**
 ```yaml
 ---
-name: skill-name
-version: v2
-description: Comprehensive description of the skill's purpose
+name: fullstory-skill-name
+version: v3
+description: Core concepts for...
+platforms: [web, ios, android, flutter, react-native]
+implementation_files: [SKILL-WEB.md, SKILL-MOBILE.md]
 related_skills:
   - other-skill-1
-  - other-skill-2
+---
+```
+
+**SKILL-WEB.md / SKILL-MOBILE.md Frontmatter:**
+```yaml
+---
+name: fullstory-skill-name-web  # or -mobile
+version: v3
+platform: web  # or platforms: [ios, android, flutter, react-native]
+parent_skill: fullstory-skill-name
+related_skills:
+  - other-skill-1
 ---
 ```
 
 ### Standard Sections
 
-1. **Overview** - What the API/concept does and when to use it
-2. **Core Concepts** - Key principles with visual diagrams
-3. **API Reference** - Syntax, parameters, limits
-4. **✅ GOOD Examples** - Correct implementations with explanations
-5. **❌ BAD Examples** - Anti-patterns with corrections
-6. **Platform-Specific** - Web, iOS, Android guidance (where applicable)
-7. **Troubleshooting** - Common issues and solutions
-8. **Key Takeaways for Agent** - Summary guidance for AI assistance
-9. **Reference Links** - Official documentation links
+**SKILL.md (Core):**
+1. **Overview** - What the API/concept does
+2. **Core Concepts** - Key principles (platform-agnostic)
+3. **API Parameters** - Parameters, types, limits
+4. **Best Practices** - Universal guidance
+5. **Troubleshooting** - Common issues
+6. **Key Takeaways for Agent** - Platform routing logic
+7. **Reference Links** - All platform docs
+
+**SKILL-WEB.md / SKILL-MOBILE.md (Implementation):**
+1. **Navigation blockquote** - Links to sibling files
+2. **API Reference** - Platform-specific syntax
+3. **✅ GOOD Examples** - Correct implementations
+4. **❌ BAD Examples** - Anti-patterns with corrections
+5. **Common Patterns** - Framework-specific (React, Vue, etc. OR iOS, Android, etc.)
+6. **Troubleshooting** - Platform-specific issues
 
 ---
 
 ## 🚀 Getting Started
 
+### The Golden Rule: SKILL.md First
+
+For any core skill, **always read SKILL.md first** for concepts, then the platform-specific file for implementation:
+- `SKILL.md` → Core concepts, API parameters, best practices
+- `SKILL-WEB.md` → JavaScript/TypeScript implementation
+- `SKILL-MOBILE.md` → iOS, Android, Flutter, React Native implementation
+
+### Where to Start
+
 1. **New to Fullstory?** Start with `meta/fullstory-getting-started/SKILL.md`
 2. **Know your industry?** Jump to the relevant `industry/` skill
-3. **Need specific API help?** Check the relevant `core/` skill
+3. **Need specific API help?** Read core skill's `SKILL.md` first, then platform file
 4. **Planning privacy?** See `meta/fullstory-privacy-strategy/SKILL.md`
+5. **Building mobile?** See `meta/mobile-instrumentation-orchestrator/SKILL.md` for sequencing
 
 ### Quick Decision Tree
 
 ```
 What do you need help with?
 │
+├─ "I'm just getting started"
+│  └─ → meta/fullstory-getting-started/SKILL.md (THE entry point)
+│
 ├─ "Which API should I use?"
-│  └─ → meta/universal-data-scoping-and-decoration
+│  └─ → meta/universal-data-scoping-and-decoration/SKILL.md
 │
 ├─ "How do I identify users?"
-│  └─ → core/fullstory-identify-users
+│  └─ → core/fullstory-identify-users/SKILL.md (concepts first)
+│     └─ Then → SKILL-WEB.md or SKILL-MOBILE.md (implementation)
 │
 ├─ "What should I mask vs exclude?"
-│  └─ → core/fullstory-privacy-controls
+│  └─ → core/fullstory-privacy-controls/SKILL.md (concepts first)
+│     └─ Then → SKILL-WEB.md or SKILL-MOBILE.md (implementation)
 │
 ├─ "I work in [industry]"
-│  └─ → industry/fullstory-[industry]
+│  └─ → industry/fullstory-[industry]/SKILL.md
 │
-├─ "My CSS class names keep changing"
-│  └─ → framework/fullstory-stable-selectors
+├─ "What order should I implement mobile SDK?"
+│  └─ → meta/mobile-instrumentation-orchestrator/SKILL.md
+│     (sequences which core SKILL.md files to read)
 │
-├─ "How do I annotate elements for any framework?"
-│  └─ → framework/fullstory-stable-selectors
+├─ "My CSS class names keep changing" (Web)
+│  └─ → framework/fullstory-stable-selectors/SKILL.md → SKILL-WEB.md
 │
-└─ "I'm just getting started"
-   └─ → meta/fullstory-getting-started
+└─ "My view IDs are unstable" (Mobile)
+   └─ → framework/fullstory-stable-selectors/SKILL.md → SKILL-MOBILE.md
 ```
 
 ---
@@ -500,13 +591,13 @@ Example connections:
 
 ## 📊 Skill Statistics
 
-| Category | Count | Focus |
-|----------|-------|-------|
-| Core API | 12 | Technical implementation |
-| Meta/Strategy | 3 | Planning and architecture |
-| Industry | 7 | Vertical-specific guidance |
-| Framework | 1 | Stable selectors for any framework |
-| **Total** | **23** | Complete Fullstory coverage |
+| Category | Skills | Files | Focus |
+|----------|--------|-------|-------|
+| Core API | 12 | 36 | Technical implementation (SKILL.md + SKILL-WEB.md + SKILL-MOBILE.md) |
+| Meta/Strategy | 4 | 4 | Planning, architecture, orchestration |
+| Industry | 7 | 7 | Vertical-specific guidance |
+| Framework | 2 | 6 | Stable selectors + test automation (SKILL.md + SKILL-WEB.md + SKILL-MOBILE.md) |
+| **Total** | **25** | **53** | Complete Fullstory coverage across all platforms |
 
 ---
 
