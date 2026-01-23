@@ -1,129 +1,250 @@
 ---
 name: fullstory-getting-started
-version: v2
-description: Comprehensive getting started guide for Fullstory Browser API v2 implementation. Provides the complete initialization flow, API overview, decision framework for which APIs to use, industry-specific guidance, privacy best practices, and framework integration patterns. Links to all core, meta, industry, and framework skills.
+version: v3
+description: >
+  THE DEFINITIVE ENTRY POINT for Fullstory implementation. Start here if you're unsure where to begin.
+  This skill provides platform routing (Web vs Mobile), explains the skill architecture (Core → Meta → Industry → Framework),
+  and guides you to the right resources for any Fullstory implementation question. Covers all platforms: Web (JavaScript/TypeScript),
+  iOS (Swift/SwiftUI), Android (Kotlin/Compose), Flutter (Dart), and React Native.
+platforms: [web, ios, android, flutter, react-native]
 related_skills:
+  # Core
   - fullstory-identify-users
   - fullstory-user-properties
   - fullstory-page-properties
   - fullstory-element-properties
   - fullstory-analytics-events
   - fullstory-privacy-controls
+  # Meta
   - fullstory-privacy-strategy
   - universal-data-scoping-and-decoration
+  - mobile-instrumentation-orchestrator
+  # Framework
   - fullstory-stable-selectors
+  - fullstory-test-automation
 ---
 
-# Fullstory Browser API v2: Getting Started Guide
+# Fullstory Getting Started Guide
 
-> **📋 Version Note**: This guide covers Fullstory Browser API **v2**. Always verify API syntax against the [official documentation](https://developer.fullstory.com/browser/getting-started/) as the API may evolve. Rate limits, parameters, and features are subject to change.
+> **🎯 START HERE**: This is the definitive entry point for Fullstory implementation. If you're unsure where to begin, you're in the right place.
 
-## Overview
-
-This guide provides everything you need to implement Fullstory's Browser API v2 in your web application. It covers:
-
-1. **Initial Setup**: Snippet installation and configuration
-2. **API Landscape**: Understanding all available APIs
-3. **Implementation Order**: What to implement first
-4. **Decision Framework**: Choosing the right API for your data
-5. **Privacy Considerations**: What to capture, mask, or exclude
-6. **Industry-Specific Guidance**: Best practices for your vertical
-7. **Skill Navigation**: Finding the right detailed guide
+> **🤖 AGENT NOTE**: Do NOT load all skills into context. If the user's request is unclear, **ask what they want to focus on** before loading additional skills. See "Key Takeaways for Agent" section below for loading strategy.
 
 ---
 
-## Complete Skill Inventory
+## How Core Skills Work: SKILL.md First
 
-### Core API Skills
+Every core skill follows a **three-file pattern**. You always start with **SKILL.md** for concepts, then go to the platform-specific file for implementation code.
 
-| Skill | Purpose | Use When |
-|-------|---------|----------|
-| `fullstory-identify-users` | Link sessions to users | Implementing login flow |
-| `fullstory-anonymize-users` | End identified sessions | Implementing logout flow |
-| `fullstory-user-properties` | Set user attributes | Adding segmentation data |
-| `fullstory-page-properties` | Set page context | SPA navigation, page data |
-| `fullstory-element-properties` | Capture interaction context | Product grids, lists |
-| `fullstory-analytics-events` | Track discrete actions | Conversions, features |
-| `fullstory-observe-callbacks` | React to FS lifecycle | Session URL for support |
-| `fullstory-logging` | Add logs to session | Error debugging |
-| `fullstory-user-consent` | Control capture consent | GDPR/CCPA compliance |
-| `fullstory-capture-control` | Pause/resume capture | Sensitive screens |
-| `fullstory-async-methods` | Promise-based API calls | Modern async flows |
-| `fullstory-privacy-controls` | Mask/exclude elements | PII protection |
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  CORE SKILL FILE STRUCTURE                                                   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  📖 SKILL.md (START HERE)                                                   │
+│  ├── Platform-agnostic concepts                                             │
+│  ├── API reference and parameters                                           │
+│  ├── Best practices and anti-patterns                                       │
+│  ├── When to use this API                                                   │
+│  └── Links to SKILL-WEB.md and SKILL-MOBILE.md                             │
+│                                                                             │
+│           ┌─────────────────┴─────────────────┐                             │
+│           ▼                                   ▼                             │
+│                                                                             │
+│  🌐 SKILL-WEB.md                       📱 SKILL-MOBILE.md                   │
+│  JavaScript/TypeScript                 iOS (Swift/SwiftUI)                  │
+│  React, Vue, Angular                   Android (Kotlin/Compose)             │
+│  Next.js, Svelte, etc.                 Flutter (Dart)                       │
+│  Implementation code                   React Native                         │
+│  Framework patterns                    Implementation code                  │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
 
-### Strategy & Meta Skills
+### Example: Using the Analytics Events Skill
 
-| Skill | Purpose | Use When |
-|-------|---------|----------|
-| `fullstory-privacy-strategy` | Data privacy decisions | Planning implementation |
-| `universal-data-scoping-and-decoration` | Where to put data | Deciding scope |
+1. **Read `fullstory-analytics-events/SKILL.md`** — Learn event naming, property types, rate limits, best practices
+2. **Then read the implementation file for your platform:**
+   - Web → `SKILL-WEB.md` for JavaScript/TypeScript code
+   - Mobile → `SKILL-MOBILE.md` for iOS/Android/Flutter/React Native code
 
-### Industry-Specific Skills
+### Mobile Sequencing: Which Skills, In What Order?
 
-| Skill | Industry | Key Considerations |
-|-------|----------|-------------------|
-| `fullstory-banking` | Banking & Financial | PCI, GLBA, transaction masking |
-| `fullstory-ecommerce` | E-commerce & Retail | Conversion funnels, product data |
-| `fullstory-gaming` | Gaming | Responsible gaming, KYC |
-| `fullstory-healthcare` | Healthcare | HIPAA, PHI exclusion |
-| `fullstory-saas` | B2B SaaS | Feature adoption, churn |
-| `fullstory-travel` | Travel & Hospitality | Booking funnels, PCI |
-| `fullstory-media-entertainment` | Media & Streaming | Engagement, subscriptions |
+For mobile implementations, the **mobile-instrumentation-orchestrator** helps you understand which skills to implement in what sequence:
 
----
+```
+Privacy Controls → User Identification → Page Properties → Analytics Events → Logging
+```
 
-## Industry Comparison at a Glance
-
-Different industries have vastly different requirements for Fullstory implementation. This table summarizes the key differences:
-
-### Privacy Defaults by Industry
-
-| Industry | Default Privacy Mode | Financial Data | User Content | Conversion Tracking | Primary Concern |
-|----------|---------------------|----------------|--------------|---------------------|-----------------|
-| **Banking** | Exclude | Exclude (ranges only) | Exclude | Limited | Regulatory (PCI, GLBA) |
-| **E-commerce** | Unmask | Capture (orders) | Mostly capture | Rich | Conversion optimization |
-| **Gaming** | Mixed | Exclude (ranges only) | Exclude | Careful | Responsible gaming |
-| **Healthcare** | Exclude | Exclude | Exclude | Very limited | HIPAA compliance |
-| **SaaS** | Unmask | Usually OK | Mask/Consider | Rich | Feature adoption |
-| **Travel** | Unmask | Capture (bookings) | Mask | Rich | Booking optimization |
-| **Media** | Unmask | N/A | Capture | Rich | Engagement metrics |
-
-### What to Capture by Industry
-
-| Data Type | Banking | E-commerce | Gaming | Healthcare | SaaS | Travel | Media |
-|-----------|---------|------------|----------|------------|------|--------|-------|
-| User names | ❌ | ⚠️ Mask | ⚠️ Mask | ❌ | ⚠️ Mask | ⚠️ Mask | ⚠️ Mask |
-| Email | ❌ | ⚠️ Hash | ⚠️ Hash | ❌ | ⚠️ Consider | ⚠️ Mask | ⚠️ Consider |
-| Product/content names | N/A | ✅ | ✅ Events/games | N/A | ✅ Features | ✅ | ✅ |
-| Prices/amounts | ❌ Ranges | ✅ | ❌ Ranges | ❌ | ✅ | ✅ | ✅ Sub prices |
-| Account balance | ❌ | N/A | ❌ | N/A | N/A | N/A | N/A |
-| Transaction details | ❌ | ✅ Order data | ❌ | ❌ | ✅ Usage | ✅ Booking | ✅ Viewing |
-| Search queries | ⚠️ | ✅ | ⚠️ | ❌ | ✅ | ✅ | ✅ |
-| Payment cards | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| Government IDs | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-
-**Legend**: ✅ = Capture, ⚠️ = Consider/Mask, ❌ = Exclude
-
-### Key Regulatory Requirements
-
-| Industry | Primary Regulations | Fullstory Requirements |
-|----------|--------------------|-----------------------|
-| **Banking** | PCI DSS, GLBA, SOX | BAA not typically needed; exclude all financial data |
-| **E-commerce** | PCI DSS, CCPA, GDPR | Exclude payment fields; consent for EU |
-| **Gaming** | Gaming licenses, AML/KYC | Never analyze gaming patterns; exclude amounts |
-| **Healthcare** | HIPAA, HITECH | BAA required; exclude ALL PHI; masking insufficient |
-| **SaaS** | SOC 2, GDPR | Enterprise privacy options; consent for EU |
-| **Travel** | PCI DSS, GDPR | Exclude passport/ID numbers; payment exclusion |
-| **Media** | COPPA, GDPR | Never track children's profiles; consent |
+The orchestrator doesn't replace reading SKILL.md files — it tells you **which SKILL.md files to read and when**, then routes to the appropriate SKILL-MOBILE.md sections for implementation.
 
 ---
 
-## I. The Fullstory API Ecosystem
+## Understanding the Skill Architecture
 
-### Complete API Reference
+The Fullstory Skills Repository (FSR) is organized in layers. Understanding this architecture helps you find the right guidance quickly.
 
-| API | Method | Purpose | Skill Document |
-|-----|--------|---------|----------------|
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  FULLSTORY SKILLS ARCHITECTURE (Start at Top, Work Down)                     │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌───────────────────────────────────────────────────────────────────────┐ │
+│  │  CORE SKILLS (API Foundation) ← START HERE                            │ │
+│  │  fullstory-identify-users, fullstory-analytics-events, etc.           │ │
+│  │  → Complete API reference and implementation guidance                 │ │
+│  │  → SKILL.md: Platform-agnostic concepts and best practices            │ │
+│  │  → SKILL-WEB.md: JavaScript/TypeScript implementation                 │ │
+│  │  → SKILL-MOBILE.md: iOS, Android, Flutter, React Native               │ │
+│  └───────────────────────────────────────────────────────────────────────┘ │
+│                                    │                                        │
+│                                    ▼ orchestrated by                        │
+│  ┌───────────────────────────────────────────────────────────────────────┐ │
+│  │  META SKILLS (Strategy Layer)                                          │ │
+│  │  fullstory-getting-started (YOU ARE HERE)                             │ │
+│  │  fullstory-privacy-strategy, universal-data-scoping-and-decoration    │ │
+│  │  mobile-instrumentation-orchestrator                                  │ │
+│  │  → Expert guidance on using core APIs together effectively            │ │
+│  │  → Decision frameworks: what data, where, when                        │ │
+│  │  → Implementation sequencing (which core skills in what order)        │ │
+│  └───────────────────────────────────────────────────────────────────────┘ │
+│                                    │                                        │
+│                                    ▼ guided by                              │
+│  ┌───────────────────────────────────────────────────────────────────────┐ │
+│  │  INDUSTRY SKILLS (Domain Expert Layer)                                 │ │
+│  │  fullstory-banking, fullstory-ecommerce, fullstory-healthcare, etc.   │ │
+│  │  → Industry-specific privacy requirements and regulations             │ │
+│  │  → Domain-specific data capture patterns                              │ │
+│  │  → Compliance guidance (HIPAA, PCI, GLBA, GDPR)                       │ │
+│  └───────────────────────────────────────────────────────────────────────┘ │
+│                                    │                                        │
+│                                    ▼ enhanced by                            │
+│  ┌───────────────────────────────────────────────────────────────────────┐ │
+│  │  FRAMEWORK SKILLS (Enhancement Layer)                                  │ │
+│  │  fullstory-stable-selectors, fullstory-test-automation                │ │
+│  │  → Cross-platform tooling: stable identifiers, test generation        │ │
+│  │  → Optional enhancements for automation and testing readiness         │ │
+│  └───────────────────────────────────────────────────────────────────────┘ │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Skill Layer Reference (Top to Bottom)
+
+| Layer | Purpose | When to Use | Entry Point |
+|-------|---------|-------------|-------------|
+| **1. Core** | Complete Fullstory API expertise across web and mobile | Need to implement a specific API (identify, events, properties, etc.) | **Always SKILL.md first**, then SKILL-WEB.md or SKILL-MOBILE.md |
+| **2. Meta** | Expert guidance on using APIs together | Planning implementation, deciding where data goes, sequencing | SKILL.md (orchestrates which core skills to use) |
+| **3. Industry** | Domain-specific compliance and patterns | Working in regulated industries or need vertical-specific guidance | SKILL.md (references core skills for implementation) |
+| **4. Framework** | Cross-platform tooling and automation | Need stable selectors for testing/AI, want test automation | SKILL.md, then SKILL-WEB.md or SKILL-MOBILE.md |
+
+### Core Skills: The API Foundation
+
+Each core skill provides **complete guidance** for one Fullstory API. **Always start with SKILL.md** for concepts, then read the platform-specific implementation file.
+
+| Core Skill | API | Start Here | Then Implementation |
+|------------|-----|------------|---------------------|
+| `fullstory-identify-users` | User identification | **SKILL.md** | SKILL-WEB.md or SKILL-MOBILE.md |
+| `fullstory-anonymize-users` | Session anonymization | **SKILL.md** | SKILL-WEB.md or SKILL-MOBILE.md |
+| `fullstory-user-properties` | User attributes | **SKILL.md** | SKILL-WEB.md or SKILL-MOBILE.md |
+| `fullstory-page-properties` | Page/screen context | **SKILL.md** | SKILL-WEB.md or SKILL-MOBILE.md |
+| `fullstory-element-properties` | Interaction context | **SKILL.md** | SKILL-WEB.md or SKILL-MOBILE.md |
+| `fullstory-analytics-events` | Custom events | **SKILL.md** | SKILL-WEB.md or SKILL-MOBILE.md |
+| `fullstory-privacy-controls` | Mask/exclude elements | **SKILL.md** | SKILL-WEB.md or SKILL-MOBILE.md |
+| `fullstory-user-consent` | GDPR/CCPA consent | **SKILL.md** | SKILL-WEB.md or SKILL-MOBILE.md |
+| `fullstory-capture-control` | Pause/resume | **SKILL.md** | SKILL-WEB.md or SKILL-MOBILE.md |
+| `fullstory-observe-callbacks` | Lifecycle hooks | **SKILL.md** | SKILL-WEB.md or SKILL-MOBILE.md |
+| `fullstory-logging` | Session logging | **SKILL.md** | SKILL-WEB.md or SKILL-MOBILE.md |
+| `fullstory-async-methods` | Promise-based APIs | **SKILL.md** | SKILL-WEB.md or SKILL-MOBILE.md |
+
+### Meta Skills: Expert Orchestration
+
+Meta skills don't replace core skills — they help you **use core skills effectively**.
+
+| Meta Skill | Purpose |
+|------------|---------|
+| `fullstory-getting-started` | **Entry point** — skill architecture, navigation, web quick start |
+| `mobile-instrumentation-orchestrator` | **Mobile sequencing** — which core skills to implement and in what order (routes to SKILL-MOBILE.md files) |
+| `fullstory-privacy-strategy` | **Privacy expert** — what to capture, mask, exclude, hash (works with `fullstory-privacy-controls`) |
+| `universal-data-scoping-and-decoration` | **Data placement expert** — user vs page vs element vs event (works with property skills) |
+
+### Industry Skills: Domain Expertise
+
+| Industry Skill | Regulations | Key Concerns |
+|----------------|-------------|--------------|
+| `fullstory-banking` | PCI, GLBA, SOX | Financial data exclusion, amount ranges |
+| `fullstory-healthcare` | HIPAA, HITECH | PHI exclusion, BAA requirements |
+| `fullstory-ecommerce` | PCI, CCPA, GDPR | Conversion tracking, payment exclusion |
+| `fullstory-gaming` | Gaming licenses, AML | Responsible gaming, wager exclusion |
+| `fullstory-saas` | SOC 2, GDPR | Feature adoption, customer data |
+| `fullstory-travel` | PCI, GDPR | Booking flows, ID exclusion |
+| `fullstory-media-entertainment` | COPPA, GDPR | Engagement, children's privacy |
+
+### Framework Skills: Enhancement Tooling
+
+| Framework Skill | Purpose |
+|-----------------|---------|
+| `fullstory-stable-selectors` | Stable identifiers for Fullstory search, testing, and AI agents (CUA) |
+| `fullstory-test-automation` | Generate test automation from decorated codebases |
+
+---
+
+## How to Navigate: Common Questions
+
+| Question | Go To | Then |
+|----------|-------|------|
+| "How do I implement **user identification**?" | `fullstory-identify-users/SKILL.md` | SKILL-WEB.md or SKILL-MOBILE.md |
+| "How do I **track events**?" | `fullstory-analytics-events/SKILL.md` | SKILL-WEB.md or SKILL-MOBILE.md |
+| "How do I **protect sensitive data**?" | `fullstory-privacy-controls/SKILL.md` | SKILL-WEB.md or SKILL-MOBILE.md |
+| "What data should I **capture vs mask vs exclude**?" | `fullstory-privacy-strategy/SKILL.md` | (strategy, then core skills) |
+| "Should this be a **user property, page property, or event**?" | `universal-data-scoping-and-decoration/SKILL.md` | (strategy, then core skills) |
+| "What **order** should I implement mobile APIs?" | `mobile-instrumentation-orchestrator/SKILL.md` | (sequencing, routes to SKILL-MOBILE.md) |
+| "I'm in **healthcare/banking/etc** — what rules apply?" | `fullstory-{industry}/SKILL.md` | (guidance, references core skills) |
+| "How do I add **stable selectors** for testing/AI?" | `fullstory-stable-selectors/SKILL.md` | SKILL-WEB.md or SKILL-MOBILE.md |
+| "How do I **generate tests** from my decorated codebase?" | `fullstory-test-automation/SKILL.md` | SKILL-WEB.md or SKILL-MOBILE.md |
+
+---
+
+## Mobile SDK Installation
+
+For mobile SDK installation and initial setup, Fullstory provides comprehensive official guides. **Use these for SDK setup**, then return to the core skills' **SKILL-MOBILE.md** files for API usage guidance.
+
+### Official Installation Guides by Platform
+
+| Platform | Installation Guide | What It Covers |
+|----------|-------------------|----------------|
+| **Android (Kotlin)** | [Getting Started with Android Data Capture](https://help.fullstory.com/hc/en-us/articles/360040596093-Getting-Started-with-Android-Data-Capture) | Comprehensive Android setup: Gradle, initialization, ProGuard, configuration |
+| **+ Jetpack Compose** | [Getting Started with Jetpack Compose](https://help.fullstory.com/hc/en-us/articles/15666387415575-Getting-Started-with-Jetpack-Compose) | Additional Compose-specific setup (use with Android guide above) |
+| **iOS (UIKit/Swift)** | [Getting Started with iOS Data Capture](https://help.fullstory.com/hc/en-us/articles/360042772333-Getting-Started-with-iOS-Data-Capture) | Comprehensive iOS setup: CocoaPods/SPM, initialization, Info.plist |
+| **+ SwiftUI** | [Integrating Fullstory into a SwiftUI App](https://help.fullstory.com/hc/en-us/articles/8867138701719-Integrating-Fullstory-into-a-SwiftUI-App) | Additional SwiftUI-specific setup (use with iOS guide above) |
+| **Flutter** | [Getting Started with Flutter Mobile Apps](https://help.fullstory.com/hc/en-us/articles/27461129353239-Getting-Started-with-Fullstory-for-Flutter-Mobile-Apps) | pub.dev setup, Dart initialization |
+| **React Native** | [Getting Started with React Native Capture](https://help.fullstory.com/hc/en-us/articles/360052419133-Getting-Started-with-Fullstory-React-Native-Capture) | npm/yarn setup, native linking |
+| **Cordova/Capacitor** | [Getting Started with Cordova or Capacitor](https://help.fullstory.com/hc/en-us/articles/16924219219223-Getting-Started-with-Cordova-or-Capacitor-Data-Capture) | Plugin installation, hybrid app setup |
+
+### After SDK Installation
+
+Once the SDK is installed and capturing data:
+
+1. **Read the core skill SKILL.md** for the API you need (e.g., `fullstory-identify-users/SKILL.md`)
+2. **Then read SKILL-MOBILE.md** for platform-specific implementation code
+3. **Use `mobile-instrumentation-orchestrator/SKILL.md`** for recommended implementation order
+
+> **Note**: The official guides above cover SDK installation. The skills repository covers **API usage** — how to identify users, track events, set properties, handle privacy, etc.
+
+---
+
+## Web Quick Start Guide
+
+> **Note**: This section provides a web quick start overview. For complete API guidance, always read the relevant **core skill's SKILL.md first**, then its **SKILL-WEB.md** for detailed implementation code.
+
+---
+
+## The Fullstory Web API Ecosystem
+
+### Complete API Reference (Browser v2)
+
+| API | Method | Purpose | Core Skill |
+|-----|--------|---------|------------|
 | **Identity** | `FS('setIdentity', { uid, properties })` | Identify known users | `fullstory-identify-users` |
 | **Anonymize** | `FS('setIdentity', { anonymous: true })` | End identified session | `fullstory-anonymize-users` |
 | **User Properties** | `FS('setProperties', { type: 'user', ... })` | Update user attributes | `fullstory-user-properties` |
@@ -170,116 +291,28 @@ Different industries have vastly different requirements for Fullstory implementa
 
 ---
 
-## II. Snippet Installation
+## Web Snippet Installation
 
-### Basic Snippet (v2)
+For snippet installation and configuration, see the official Fullstory documentation:
 
-Add this snippet to your HTML `<head>`:
+**[Getting Started with Web](https://developer.fullstory.com/browser/getting-started/)** — Comprehensive guide covering:
+- Snippet installation (HTML, npm `@fullstory/browser`, Google Tag Manager, Segment, Tealium)
+- Configuration options (`_fs_org`, `_fs_namespace`, `_fs_capture_on_startup`)
+- Browser SDK usage
 
-```html
-<script>
-window['_fs_host'] = 'fullstory.com';
-window['_fs_script'] = 'edge.fullstory.com/s/fs.js';
-window['_fs_org'] = 'YOUR_ORG_ID';
-window['_fs_namespace'] = 'FS';
+### After Snippet Installation
 
-(function(m,n,e,t,l,o,g,y){
-    if (e in m) {if(m.console && m.console.log) { m.console.log('Fullstory namespace conflict. Please set window["_fs_namespace"].');} return;}
-    g=m[e]=function(a,b,s){g.q?g.q.push([a,b,s]):g._api(a,b,s);};g.q=[];
-    o=n.createElement(t);o.async=1;o.crossOrigin='anonymous';o.src='https://'+_fs_script;
-    y=n.getElementsByTagName(t)[0];y.parentNode.insertBefore(o,y);
-    g.identify=function(i,v,s){g(l,{uid:i},s);if(v)g(l,v,s)};g.setUserVars=function(v,s){g(l,v,s)};g.event=function(i,v,s){g('event',{n:i,p:v},s)};
-    g.anonymize=function(){g.identify(!!0)};
-    g.shutdown=function(){g("rec",!1)};g.restart=function(){g("rec",!0)};
-    g.log = function(a,b){g("log",[a,b])};
-    g.consent=function(a){g("consent",!arguments.length||a)};
-    g.identifyAccount=function(i,v){o='account';v=v||{};v.acctId=i;g(o,v)};
-    g.clearUserCookie=function(){};
-    g.setVars=function(n,p){g('setVars',[n,p]);};
-    g._w={};y='XMLHttpRequest';g._w[y]=m[y];y='fetch';g._w[y]=m[y];
-    if(m[y])m[y]=function(){return g._w[y].apply(this,arguments)};
-    g._v="2.0.0";
-})(window,document,window['_fs_namespace'],'script','identify');
-</script>
-```
+Once the snippet is installed and capturing data:
 
-### Configuration Options
+1. **Read the core skill SKILL.md** for the API you need (e.g., `fullstory-identify-users/SKILL.md`)
+2. **Then read SKILL-WEB.md** for JavaScript/TypeScript implementation code
+3. **Use the API reference below** to find the right skill for your use case
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `_fs_org` | Your Fullstory organization ID | **Required** |
-| `_fs_namespace` | Global variable name | `'FS'` |
-| `_fs_capture_on_startup` | Start capturing immediately | `true` |
-| `_fs_host` | Fullstory host | `'fullstory.com'` |
-| `_fs_script` | Script location | `'edge.fullstory.com/s/fs.js'` |
-
-### How Fullstory Tracks Users (First-Party Cookies)
-
-Fullstory uses **first-party cookies** set on YOUR domain to track users:
-
-| Cookie | Duration | Purpose |
-|--------|----------|---------|
-| `fs_uid` | 1 year | Tracks user across sessions (the "capture cookie") |
-| `fs_cid` | 1 year | Stores consent state for the device |
-| `fs_lua` | 30 min | Last user action timestamp (session lifecycle) |
-
-**Why First-Party Cookies Matter:**
-
-| Aspect | First-Party (Fullstory) | Third-Party Cookies |
-|--------|-------------------------|---------------------|
-| Domain | Set on YOUR domain | Set on external domain |
-| Browser blocking | ✅ Not blocked by browsers/ad-blockers | ❌ Often blocked |
-| Cross-site tracking | ❌ Cannot track across different sites | ✅ Can track across web |
-| Privacy | ✅ Your data stays isolated to your site | ❌ Data aggregated |
-
-**Key Behaviors:**
-- **Anonymous users persist**: Same `fs_uid` cookie = same user across sessions (until cookie expires/deleted)
-- **Session merging**: When `setIdentity` is called, ALL previous anonymous sessions from that cookie merge into the identified user
-- **Anonymization resets**: `setIdentity({ anonymous: true })` generates a NEW `fs_uid` cookie, breaking the link to previous sessions
-
-> **Reference**: [Why Fullstory uses First-Party Cookies](https://help.fullstory.com/hc/en-us/articles/360020829513-Why-Fullstory-uses-First-Party-Cookies)
-
-### Private by Default Mode (Recommended for Sensitive Industries)
-
-Fullstory offers a **Private by Default** capture mode that inverts the default behavior:
-
-| Mode | Default Behavior | Your Action |
-|------|------------------|-------------|
-| **Standard** | Everything captured (unmask is default) | Add `fs-mask` / `fs-exclude` to protect sensitive elements |
-| **Private by Default** | Everything masked | Add `fs-unmask` to reveal safe content |
-
-**When to Use Private by Default:**
-- ✅ Banking / Financial services
-- ✅ Healthcare / HIPAA-regulated
-- ✅ Enterprise SaaS with customer data
-- ✅ Any app where "default open" is too risky
-
-**Enable via:**
-- **New accounts**: Select during onboarding wizard
-- **Existing accounts**: Contact [Fullstory Support](https://help.fullstory.com/hc/en-us/requests/new)
-
-> **Reference**: [Fullstory Private by Default](https://help.fullstory.com/hc/en-us/articles/360044349073-Fullstory-Private-by-Default)
-
-### Consent-Required Configuration (GDPR)
-
-For GDPR compliance, don't capture until consent is given:
-
-```html
-<script>
-window['_fs_capture_on_startup'] = false;  // Don't capture until consent
-window['_fs_org'] = 'YOUR_ORG_ID';
-// ... rest of snippet
-</script>
-```
-
-Then call when consent is granted:
-```javascript
-FS('setIdentity', { consent: true });
-```
+> **Note**: The official guide covers snippet installation. The skills repository covers **API usage** — how to identify users, track events, set properties, handle privacy, etc.
 
 ---
 
-## III. Implementation Order
+## Web Implementation Order
 
 ### Recommended Implementation Sequence
 
@@ -306,6 +339,10 @@ Phase 4: Advanced
 ├── 13. Implement consent flows (if GDPR required)
 ├── 14. Add error logging
 └── 15. Implement capture control (if needed)
+
+Phase 5: Enhancement (Optional)
+├── 16. Add stable selectors (fullstory-stable-selectors)
+└── 17. Generate test automation (fullstory-test-automation)
 ```
 
 ### Minimum Viable Implementation
@@ -344,7 +381,7 @@ FS('setIdentity', { anonymous: true });
 
 ---
 
-## IV. Privacy First: Three Privacy Modes
+## Privacy First: Three Privacy Modes
 
 Before capturing any data, understand the three privacy modes:
 
@@ -380,19 +417,19 @@ Is this public/business data?
 
 ### Privacy by Industry Quick Reference
 
-| Industry | Default Recommendation |
-|----------|----------------------|
-| Healthcare | Use Private by Default mode; explicit unmask only |
-| Banking | Exclude financial data; mask PII |
-| Gaming | Exclude amounts; mask user info |
-| E-commerce | Unmask products; mask checkout PII; exclude payment |
-| SaaS | Unmask features; mask user content |
-| Travel | Unmask search/booking; mask traveler PII; exclude IDs |
-| Media | Unmask content; mask profiles |
+| Industry | Default Recommendation | Industry Skill |
+|----------|----------------------|----------------|
+| Healthcare | Use Private by Default mode; explicit unmask only | `fullstory-healthcare` |
+| Banking | Exclude financial data; mask PII | `fullstory-banking` |
+| Gaming | Exclude amounts; mask user info | `fullstory-gaming` |
+| E-commerce | Unmask products; mask checkout PII; exclude payment | `fullstory-ecommerce` |
+| SaaS | Unmask features; mask user content | `fullstory-saas` |
+| Travel | Unmask search/booking; mask traveler PII; exclude IDs | `fullstory-travel` |
+| Media | Unmask content; mask profiles | `fullstory-media-entertainment` |
 
 ---
 
-## V. Quick Decision Guide
+## Quick Decision Guide
 
 ### "Where should I put this data?"
 
@@ -427,10 +464,12 @@ Is this a discrete action/event?
      YES → Event (trackEvent)
 ```
 
+> **Deep Dive**: See `universal-data-scoping-and-decoration/SKILL.md` for comprehensive guidance.
+
 ### Quick Reference Table
 
-| I want to... | Use this API | Skill |
-|--------------|--------------|-------|
+| I want to... | Use this API | Core Skill |
+|--------------|--------------|------------|
 | Link sessions to a user | `setIdentity` | `fullstory-identify-users` |
 | Add user attributes | `setProperties(user)` | `fullstory-user-properties` |
 | Set page context | `setProperties(page)` | `fullstory-page-properties` |
@@ -445,7 +484,7 @@ Is this a discrete action/event?
 
 ---
 
-## VI. Industry-Specific Quick Start
+## Industry-Specific Quick Start
 
 ### Banking/Financial Services
 ```javascript
@@ -462,7 +501,7 @@ FS('trackEvent', {
   }
 });
 ```
-**→ See `fullstory-banking` for complete guide**
+**→ See `fullstory-banking/SKILL.md` for complete guide**
 
 ### E-commerce
 ```javascript
@@ -487,7 +526,7 @@ FS('trackEvent', {
   }
 });
 ```
-**→ See `fullstory-ecommerce` for complete guide**
+**→ See `fullstory-ecommerce/SKILL.md` for complete guide**
 
 ### Healthcare
 ```javascript
@@ -498,7 +537,7 @@ FS('setIdentity', { uid: generateSessionId() });  // No linking to patient
 // Use Private by Default mode
 // Only track: navigation, errors, page load times
 ```
-**→ See `fullstory-healthcare` for complete guide**
+**→ See `fullstory-healthcare/SKILL.md` for complete guide**
 
 ### SaaS
 ```javascript
@@ -522,89 +561,11 @@ FS('trackEvent', {
   }
 });
 ```
-**→ See `fullstory-saas` for complete guide**
+**→ See `fullstory-saas/SKILL.md` for complete guide**
 
 ---
 
-## VII. Common Integration Patterns
-
-### Pattern 1: React Integration
-
-```jsx
-// hooks/useFullstory.js
-import { useEffect } from 'react';
-import { useAuth } from './useAuth';
-import { useLocation } from 'react-router-dom';
-
-export function useFullstory() {
-  const { user, isAuthenticated } = useAuth();
-  const location = useLocation();
-  
-  // Handle user identification
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      FS('setIdentity', {
-        uid: user.id,
-        properties: {
-          displayName: user.name,
-          email: user.email,
-          plan: user.plan
-        }
-      });
-    }
-  }, [user, isAuthenticated]);
-  
-  // Handle page changes
-  useEffect(() => {
-    const pageName = getPageName(location.pathname);
-    FS('setProperties', {
-      type: 'page',
-      properties: { pageName }
-    });
-  }, [location]);
-  
-  // Return helper functions
-  return {
-    trackEvent: (name, properties) => {
-      FS('trackEvent', { name, properties });
-    },
-    setUserProperty: (properties) => {
-      FS('setProperties', { type: 'user', properties });
-    }
-  };
-}
-```
-
-### Pattern 2: Privacy-First Component Wrapper
-
-```jsx
-// components/PrivacyWrapper.js
-export function SensitiveData({ children, level = 'mask' }) {
-  const className = level === 'exclude' ? 'fs-exclude' : 'fs-mask';
-  return <div className={className}>{children}</div>;
-}
-
-export function PublicData({ children }) {
-  return <div className="fs-unmask">{children}</div>;
-}
-
-// Usage
-<SensitiveData level="exclude">
-  <CreditCardForm />
-</SensitiveData>
-
-<SensitiveData>
-  <UserProfile />  {/* Masked by default */}
-</SensitiveData>
-
-<PublicData>
-  <ProductGrid />  {/* Visible */}
-</PublicData>
-```
-
----
-
-## VIII. Testing Your Integration
+## Testing Your Integration
 
 ### 1. Verify Snippet Installation
 
@@ -637,7 +598,7 @@ After triggering events:
 
 ---
 
-## IX. Troubleshooting
+## Troubleshooting
 
 ### Fullstory Not Loading
 
@@ -674,107 +635,104 @@ FS('setIdentity', { uid: user.id });
 
 ---
 
-## X. Related Skills Reference
-
-### Core Data Capture
-
-| Skill | Use For |
-|-------|---------|
-| `fullstory-identify-users` | User identification and login |
-| `fullstory-anonymize-users` | Logout and user switching |
-| `fullstory-user-properties` | User attributes and segmentation |
-| `fullstory-page-properties` | Page context and Journeys |
-| `fullstory-element-properties` | Interaction-level data |
-| `fullstory-analytics-events` | Business events and funnels |
-
-### Privacy & Control
-
-| Skill | Use For |
-|-------|---------|
-| `fullstory-privacy-controls` | Element masking and exclusion |
-| `fullstory-privacy-strategy` | Data privacy decisions |
-| `fullstory-user-consent` | GDPR/CCPA compliance |
-| `fullstory-capture-control` | Pause/resume recording |
-
-### Lifecycle & Utilities
-
-| Skill | Use For |
-|-------|---------|
-| `fullstory-async-methods` | Promise-based API calls |
-| `fullstory-observe-callbacks` | Session URL and lifecycle events |
-| `fullstory-logging` | Error and debug logging |
-
-### Industry-Specific
-
-| Skill | Use For |
-|-------|---------|
-| `fullstory-banking` | Financial services implementation |
-| `fullstory-ecommerce` | E-commerce/retail implementation |
-| `fullstory-gaming` | Gaming/gaming implementation |
-| `fullstory-healthcare` | Healthcare/HIPAA implementation |
-| `fullstory-saas` | B2B SaaS implementation |
-| `fullstory-travel` | Travel/hospitality implementation |
-| `fullstory-media-entertainment` | Media/streaming implementation |
-
-### Strategy
-
-| Skill | Use For |
-|-------|---------|
-| `universal-data-scoping-and-decoration` | Deciding where to put data |
-
-### Framework Integration
-
-| Skill | Use For |
-|-------|---------|
-| `fullstory-stable-selectors` | Stable `data-*` attributes for any framework (React, Angular, Vue, etc.) |
-
----
-
 ## Key Takeaways for Agent
 
-When helping developers get started with Fullstory:
+When helping developers with Fullstory implementation:
 
-1. **Privacy first**:
-   - Ask what industry/regulations apply
-   - Point to appropriate industry skill
-   - Default to more restrictive privacy in regulated industries
+### 1. Don't Load All Skills — Ask First
 
-2. **Implementation order matters**:
-   - Start with privacy controls
-   - Then identification (login/logout)
-   - Add page properties (pageName is crucial for Journeys)
-   - Then events and element properties
+**Context efficiency is critical.** There are 12+ core skills, multiple meta/industry/framework skills. Loading them all would bloat the context window unnecessarily.
 
-3. **Minimum viable integration**:
-   - Privacy classes on sensitive elements
-   - setIdentity on login
-   - setIdentity anonymous on logout
-   - setProperties(page) with pageName
-   - A few key trackEvent calls
+**If the user's intent is unclear, ASK:**
+- "What are you trying to implement today?" (identity, events, privacy, etc.)
+- "What platform are you building for?" (web, iOS, Android, Flutter, React Native)
+- "Are you in a regulated industry?" (healthcare, banking, insurance, etc.)
 
-4. **Industry matters**:
-   - Healthcare: Default exclude, BAA required
-   - Banking: Exclude financial data, use ranges
-   - E-commerce: Can capture most product data
-   - SaaS: Rich feature tracking is valuable
+**Then load only the relevant skills:**
+- 1-2 core skills based on what they're implementing
+- 1 industry skill if applicable
+- Framework skills only if they mention testing/selectors
 
-5. **Common first questions**:
-   - "How do I link sessions to users?" → `fullstory-identify-users`
-   - "Where should I put this data?" → `universal-data-scoping-and-decoration`
-   - "How do I track conversions?" → `fullstory-analytics-events`
-   - "What should I mask vs exclude?" → `fullstory-privacy-controls`
+### 2. SKILL.md First — Always
+- **Core skills**: Always read SKILL.md first for concepts, then SKILL-WEB.md or SKILL-MOBILE.md for implementation
+- **Meta skills**: Provide orchestration and strategy, route TO core skills
+- **Industry skills**: Provide domain guidance, reference core skills for implementation
+- **Framework skills**: Same pattern — SKILL.md first, then platform-specific
 
-6. **Point to specific skills** for detailed implementation guidance
+### 3. Skill Architecture Summary
+- **Core skills**: Complete API guidance — SKILL.md (concepts) + SKILL-WEB.md + SKILL-MOBILE.md (implementation)
+- **Meta skills**: Expert orchestration — help decide WHICH core skills to use and in WHAT ORDER
+- **Industry skills**: Domain-specific compliance — reference core skills for HOW to implement
+- **Framework skills**: Enhancement tooling — stable selectors, test automation (same file pattern)
+
+### 4. Privacy First
+- Ask what industry/regulations apply
+- Point to appropriate industry skill
+- Default to more restrictive privacy in regulated industries
+
+### 5. Implementation Order Matters
+- Start with privacy controls
+- Then identification (login/logout)
+- Add page properties (pageName is crucial for Journeys)
+- Then events and element properties
+
+### 6. Skill Loading Strategy
+
+**Minimal load for common scenarios:**
+
+| User Intent | Load These Skills Only |
+|-------------|------------------------|
+| "Help me identify users" | `fullstory-identify-users/SKILL.md` + platform file |
+| "Help me track events" | `fullstory-analytics-events/SKILL.md` + platform file |
+| "Help me with privacy" | `fullstory-privacy-controls/SKILL.md` + platform file |
+| "I'm building mobile" | `mobile-instrumentation-orchestrator/SKILL.md` (it routes to others) |
+| "I'm in healthcare" | `fullstory-healthcare/SKILL.md` + `fullstory-privacy-controls/SKILL.md` |
+| "I need stable selectors" | `fullstory-stable-selectors/SKILL.md` + platform file |
+| "I'm not sure what I need" | **Ask the user** before loading anything |
+
+### 7. Common User Questions
+| Question | Start With | Then |
+|----------|------------|------|
+| "How do I link sessions to users?" | `fullstory-identify-users/SKILL.md` | SKILL-WEB.md or SKILL-MOBILE.md |
+| "Where should I put this data?" | `universal-data-scoping-and-decoration/SKILL.md` | (routes to appropriate core skills) |
+| "How do I track conversions?" | `fullstory-analytics-events/SKILL.md` | SKILL-WEB.md or SKILL-MOBILE.md |
+| "What should I mask vs exclude?" | `fullstory-privacy-controls/SKILL.md` | SKILL-WEB.md or SKILL-MOBILE.md |
+| "What order for mobile?" | `mobile-instrumentation-orchestrator/SKILL.md` | (sequences which core SKILL.md → SKILL-MOBILE.md) |
+
+### 8. Routing Pattern
+For any implementation question:
+1. **Start with SKILL.md** of the relevant core skill (concepts, API reference, best practices)
+2. **Then platform-specific** — SKILL-WEB.md or SKILL-MOBILE.md for implementation code
+3. **Add industry guidance** if in a regulated vertical (references core skills)
+4. **Add framework skills** for enhancements (stable selectors, test automation)
 
 ---
 
 ## Reference Links
 
-- **Getting Started**: https://developer.fullstory.com/browser/getting-started/
-- **Privacy Controls**: https://help.fullstory.com/hc/en-us/articles/360020623574
+### Web SDK Documentation
+- **Getting Started (Web)**: https://developer.fullstory.com/browser/getting-started/
 - **Custom Properties**: https://developer.fullstory.com/browser/custom-properties/
-- **Help Center**: https://help.fullstory.com/
+
+### Mobile SDK Installation Guides (Help Center)
+- **Android (Kotlin)**: https://help.fullstory.com/hc/en-us/articles/360040596093-Getting-Started-with-Android-Data-Capture
+- **Android + Jetpack Compose**: https://help.fullstory.com/hc/en-us/articles/15666387415575-Getting-Started-with-Jetpack-Compose
+- **iOS (UIKit/Swift)**: https://help.fullstory.com/hc/en-us/articles/360042772333-Getting-Started-with-iOS-Data-Capture
+- **iOS + SwiftUI**: https://help.fullstory.com/hc/en-us/articles/8867138701719-Integrating-Fullstory-into-a-SwiftUI-App
+- **Flutter**: https://help.fullstory.com/hc/en-us/articles/27461129353239-Getting-Started-with-Fullstory-for-Flutter-Mobile-Apps
+- **React Native**: https://help.fullstory.com/hc/en-us/articles/360052419133-Getting-Started-with-Fullstory-React-Native-Capture
+- **Cordova/Capacitor**: https://help.fullstory.com/hc/en-us/articles/16924219219223-Getting-Started-with-Cordova-or-Capacitor-Data-Capture
+
+### Mobile SDK API Documentation (Developer Portal)
+- **iOS API Reference**: https://developer.fullstory.com/mobile/ios/
+- **Android API Reference**: https://developer.fullstory.com/mobile/android/
+- **React Native API Reference**: https://developer.fullstory.com/mobile/react-native/
+- **Flutter API Reference**: https://developer.fullstory.com/mobile/flutter/
+
+### Help Center
+- **Privacy Controls**: https://help.fullstory.com/hc/en-us/articles/360020623574
+- **Help Center Home**: https://help.fullstory.com/
 
 ---
 
-*This getting started guide provides the foundation for implementing Fullstory Browser API v2. For detailed implementation guidance on any specific API or industry, refer to the linked skill documents.*
+*This getting started guide is the definitive entry point for Fullstory implementation. For detailed API guidance, see core skills. For mobile implementation, see the mobile instrumentation orchestrator. For industry-specific requirements, see industry skills.*
