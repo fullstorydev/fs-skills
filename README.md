@@ -644,11 +644,5 @@ Modern CSS build tools (Tailwind, PostCSS purge, CSS Modules) may remove "unused
 
 ---
 
-## 📜 License
-
-Internal use only - Fullstory Solutions Engineering
-
----
-
 *FSR - Enabling expert-level Fullstory semantic decoration guidance through Agent Skills*
 
