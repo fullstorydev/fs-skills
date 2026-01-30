@@ -33,7 +33,7 @@ related_skills:
 |----------|-----|--------|
 | iOS | `FullStory` | `FS.setAttribute(view:attributeName:attributeValue:)` |
 | Android | `FullStory` | `FS.setAttribute(view, attributeName, attributeValue)` |
-| Flutter | `fullstory_flutter` | `FS.setAttribute(view: view, name: '', value: '')` |
+| Flutter | `fullstory_capture` | `FSCustomAttributes(attributes: {...}, child: ...)` |
 | React Native | `@fullstory/react-native` | `FullStory.setAttribute(ref, name, value)` |
 
 ---
@@ -484,95 +484,70 @@ public void setupView(View view, int quantity, double price, boolean available) 
 ### API Reference
 
 ```dart
-import 'package:fullstory_flutter/fs.dart';
+import 'package:fullstory_capture/fullstory_capture.dart';
 
-// Basic syntax
-FS.setAttribute(view: view, name: String, value: String);
+FSCustomAttributes(
+  classes: ['class1', 'class2'],
+  attributes: {'field1': 'value1'},
+  child: YourWidget(),
+)
 ```
 
-**Note**: Flutter's element properties API requires a view reference. Use `GlobalKey` to get the view.
+**Note**: Use `FSCustomAttributes` to attach element properties declaratively. Wrap the widget that represents the element and pass property values and schema via `attributes`.
 
 ### ✅ GOOD Implementation Examples
 
 #### Product Card with Comprehensive Properties
 
 ```dart
-// GOOD: Complete product card implementation
-class ProductCard extends StatefulWidget {
+// GOOD: Complete product card implementation with proper typing
+import 'package:fullstory_capture/fullstory_capture.dart';
+import 'package:flutter/material.dart';
+import 'dart:convert';
+
+class ProductCard extends StatelessWidget {
   final Product product;
   
-  const ProductCard({required this.product, Key? key}) : super(key: key);
+  const ProductCard({Key? key, required this.product}) : super(key: key);
   
   @override
-  State<ProductCard> createState() => _ProductCardState();
-}
-
-class _ProductCardState extends State<ProductCard> {
-  final GlobalKey _cardKey = GlobalKey();
-  
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _setElementProperties();
-    });
+  Widget build(BuildContext context) {
+    return FSCustomAttributes(
+      classes: ['product-card'],
+      attributes: {
+        'data-product-id': product.id,
+        'data-product-name': product.name,
+        'data-category': product.category,
+        'data-price': product.price.toString(),
+        'data-stock-level': product.stockLevel.toString(),
+        'data-on-sale': product.isOnSale.toString(),
+        'data-fs-properties-schema': _buildSchema(),
+        'data-fs-element': 'Product Card',
+      },
+      child: Container(
+        child: Column(
+          children: [
+            Text(product.name),
+            Text('\$${product.price}'),
+            ElevatedButton(
+              onPressed: () => CartManager.instance.add(product),
+              child: const Text('Add to Cart'),
+            ),
+          ],
+        ),
+      ),
+    );
   }
   
-  @override
-  void didUpdateWidget(ProductCard oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.product.id != widget.product.id) {
-      _setElementProperties();
-    }
-  }
-  
-  void _setElementProperties() {
-    final view = _cardKey.currentContext?.findRenderObject();
-    if (view == null) return;
-    
-    final product = widget.product;
-    
-    // Set attribute values first
-    FS.setAttribute(view: view, name: 'data-product-id', value: product.id);
-    FS.setAttribute(view: view, name: 'data-product-name', value: product.name);
-    FS.setAttribute(view: view, name: 'data-category', value: product.category);
-    FS.setAttribute(view: view, name: 'data-price', value: product.price.toString());
-    FS.setAttribute(view: view, name: 'data-stock-level', value: product.stockLevel.toString());
-    FS.setAttribute(view: view, name: 'data-on-sale', value: product.isOnSale.toString());
-    
-    // Build and set schema
-    final schema = {
+  String _buildSchema() {
+    return jsonEncode({
       'data-product-id': {'type': 'str', 'name': 'productId'},
       'data-product-name': {'type': 'str', 'name': 'productName'},
       'data-category': {'type': 'str', 'name': 'category'},
       'data-price': {'type': 'real', 'name': 'price'},
       'data-stock-level': {'type': 'int', 'name': 'stockLevel'},
       'data-on-sale': {'type': 'bool', 'name': 'isOnSale'},
-    };
-    
-    FS.setAttribute(view: view, name: 'data-fs-properties-schema', value: jsonEncode(schema));
-    FS.setAttribute(view: view, name: 'data-fs-element', value: 'Product Card');
-  }
-  
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      key: _cardKey,
-      child: Column(
-        children: [
-          Text(widget.product.name),
-          Text('\$${widget.product.price}'),
-          ElevatedButton(
-            onPressed: () => _addToCart(),
-            child: const Text('Add to Cart'),
-          ),
-        ],
-      ),
-    );
-  }
-  
-  void _addToCart() {
-    CartManager.instance.add(widget.product);
+    });
   }
 }
 ```
