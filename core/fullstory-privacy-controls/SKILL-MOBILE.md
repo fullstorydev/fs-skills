@@ -29,35 +29,47 @@ related_skills:
 
 ## Quick Reference
 
-| Platform | SDK | Exclude | Mask | Unmask |
-|----------|-----|---------|------|--------|
-| iOS | `FullStory` | `FS.exclude(_:)` | `FS.mask(_:)` | `FS.unmask(_:)` |
-| Android | `FullStory` | `FS.exclude(view)` | `FS.mask(view)` | `FS.unmask(view)` |
-| Flutter | `fullstory_flutter` | `FS.exclude(key)` | `FS.mask(key)` | `FS.unmask(key)` |
-| React Native | `@fullstory/react-native` | `fsClass="fs-exclude"` | `fsClass="fs-mask"` | `fsClass="fs-unmask"` |
+| Platform | Privacy Methods |
+|----------|-----------------|
+| iOS | `FS.mask(view)`, `view.fsMask()`, `.fsMask()` |
+| Android | `FS.mask(view)`, `FS.unmask(view)`, `FS.exclude(view)` |
+| Flutter | `FS.mask(key)`, `FS.unmask(key)`, `FS.exclude(key)` |
+| React Native | `fsClass="fs-mask"`, `fsClass="fs-unmask"`, `fsClass="fs-exclude"` |
 
 ---
 
 ## iOS (Swift/SwiftUI)
 
-### API Reference
+> **Full addClass API**: See [fullstory-element-properties/SKILL-MOBILE.md](../fullstory-element-properties/SKILL-MOBILE.md#ios--addclass-api-reference) for all ways to add classes (function call, UIView extension, SwiftUI modifier) and singular/plural variants (`addClass`, `addClasses`).
+
+### Privacy Classes
+
+| Class | Behavior |
+|-------|----------|
+| `.mask` | Structure captured, text wireframed |
+| `.maskWithoutConsent` | Masked unless user explicitly consents |
+| `.unmask` | Everything captured |
+| `.unmaskWithConsent` | Captured only when user consents |
+| `.exclude` | Nothing captured, events ignored |
+| `.excludeWithoutConsent` | Excluded unless user explicitly consents |
+
+The `*Consent` variants depend on `FS.consent`. See [Add Class docs](https://developer.fullstory.com/mobile/ios/fullcapture/add-class/).
+
+### Privacy Examples
 
 ```swift
 import FullStory
 
-// Exclude a view (nothing captured, events ignored)
-FS.exclude(view)
+// UIKit — mask/exclude sensitive fields
+FS.mask(emailField)
+FS.exclude(passwordField)
+ssnField.fsExclude()
 
-// Mask a view (structure captured, text wireframed)
-FS.mask(view)
-
-// Unmask a view (everything captured)
-FS.unmask(view)
-
-// SwiftUI modifiers
-.fsExclude()
-.fsMask()
-.fsUnmask()
+// SwiftUI — privacy modifiers
+SecureField("Password", text: $password)
+    .fsExclude()
+Text(user.email)
+    .fsMask()
 ```
 
 ### ✅ GOOD Implementation Examples
@@ -1193,11 +1205,6 @@ function PaymentScreen() {
   <TextInput placeholder="SSN" />  {/* Should be fs-exclude! */}
   <TextInput placeholder="Bank Account" />  {/* Should be fs-exclude! */}
 </View>
-
-// BAD: Entire screen excluded (loses all analytics)
-<FSPage fsClass="fs-exclude">
-  <CheckoutContent />  {/* Everything excluded! */}
-</FSPage>
 ```
 
 ---

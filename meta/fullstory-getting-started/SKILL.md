@@ -221,6 +221,16 @@ For mobile SDK installation and initial setup, Fullstory provides comprehensive 
 | **React Native** | [Getting Started with React Native Capture](https://help.fullstory.com/hc/en-us/articles/360052419133-Getting-Started-with-Fullstory-React-Native-Capture) | npm/yarn setup, native linking |
 | **Cordova/Capacitor** | [Getting Started with Cordova or Capacitor](https://help.fullstory.com/hc/en-us/articles/16924219219223-Getting-Started-with-Cordova-or-Capacitor-Data-Capture) | Plugin installation, hybrid app setup |
 
+### Android: Agent-assisted setup
+
+For **Android**, you can use the in-repo setup guide so the AI companion can apply the changes for you:
+
+- **File**: [SKILL-ANDROID.md](./SKILL-ANDROID.md) (in this folder)
+- **Flow**: The agent will **prompt you for your Fullstory Org ID**, then insert the correct snippets into your project’s `project/build.gradle` (or `settings.gradle`), `app/build.gradle`, and initialization code as needed.
+- **Use this when**: You want copy-paste-free setup and are starting a new Android integration.
+
+After the agent applies the edits, continue with the core skills’ **SKILL-MOBILE.md** files for API usage (identify, events, properties, privacy).
+
 ### After SDK Installation
 
 Once the SDK is installed and capturing data:
