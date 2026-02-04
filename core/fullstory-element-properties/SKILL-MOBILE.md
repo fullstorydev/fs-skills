@@ -29,12 +29,12 @@ related_skills:
 
 ## Quick Reference
 
-| Platform | SDK | Method |
-|----------|-----|--------|
-| iOS | `FullStory` | `FS.setAttribute(view:attributeName:attributeValue:)` |
-| Android | `FullStory` | `FS.setAttribute(view, attributeName, attributeValue)` |
-| Flutter | `fullstory_capture` | `FSCustomAttributes(attributes: {...}, child: ...)` |
-| React Native | `@fullstory/react-native` | `FullStory.setAttribute(ref, name, value)` |
+| Platform | SDK | setAttribute | addClass |
+|----------|-----|--------------|----------|
+| iOS | `FullStory` | `FS.setAttribute(view:attributeName:attributeValue:)` | `FS.addClass(view, .className)`, `view.fsAddClass(.className)` |
+| Android | `FullStory` | `FS.setAttribute(view, attributeName, attributeValue)` | — |
+| Flutter | `fullstory_capture` | `FSCustomAttributes(attributes: {...}, child: ...)` | `FSCustomAttributes(classes: [...], child: ...)` |
+| React Native | `@fullstory/react-native` | `FullStory.setAttribute(ref, name, value)` | `fsClass="class-name"` prop |
 
 ---
 
@@ -42,14 +42,31 @@ related_skills:
 
 ### API Reference
 
+**Attributes** — attach key-value data to views (primary use case):
+
 ```swift
 import FullStory
 
-// Basic syntax
 FS.setAttribute(view: UIView, attributeName: String, attributeValue: String)
 ```
 
-**Note**: All attribute values must be strings. Convert numbers and booleans using `String()`.
+All values must be strings — use `String()` for numbers/booleans.
+
+**Classes** — add CSS-like class names for identification or privacy:
+
+```swift
+// UIKit
+FS.addClass(view, className: "product-card")
+FS.addClasses(view, classNames: ["featured", "on-sale"])
+view.fsAddClass("my-class")
+view.fsAddClasses([.mask, "my-class"])
+
+// SwiftUI
+Text("Label").fsAddClass("price")
+Button("Buy") { }.fsAddClasses(["cta", "primary"])
+```
+
+For privacy classes (`.mask`, `.unmask`, `.exclude`, etc.), see [fullstory-privacy-controls](../fullstory-privacy-controls/SKILL-MOBILE.md).
 
 ### ✅ GOOD Implementation Examples
 
@@ -91,6 +108,15 @@ class ProductCardView: UIView {
         
         // Name the element
         FS.setAttribute(self, attributeName: "data-fs-element", attributeValue: "Product Card")
+        
+        // Add class for identification/filtering (optional)
+        if product.isOnSale {
+            self.fsAddClasses(["product-card", "onSale"])
+        } else if product.isFeatured {
+            self.fsAddClasses(["product-card", "featured"])
+        } else {
+            self.fsAddClass("product-card")
+        }
         
         // Configure child button (inherits parent properties)
         FS.setAttribute(addToCartButton, attributeName: "data-fs-element", attributeValue: "Add to Cart Button")
